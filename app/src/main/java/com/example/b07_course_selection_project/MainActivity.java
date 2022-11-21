@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     // startActivity(new Intent(MainActivity.this, //user panel here));
+                    Toast.makeText(MainActivity.this, "Successfully logged in!", Toast.LENGTH_LONG).show();
                     binding.loading.setVisibility(View.GONE);
                 }else{
                     Toast.makeText(MainActivity.this, "Failed to login! Please check credentials!", Toast.LENGTH_LONG).show();
