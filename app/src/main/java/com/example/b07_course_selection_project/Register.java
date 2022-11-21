@@ -7,27 +7,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class Register extends AppCompatActivity {
+import com.example.b07_course_selection_project.databinding.ActivityMainBinding;
+import com.example.b07_course_selection_project.databinding.ActivityRegisterBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
-    private Button homeButton;
+public class Register extends AppCompatActivity {
+    private ActivityRegisterBinding binding;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        mAuth = FirebaseAuth.getInstance();
+        setContentView(binding.getRoot());
         //home button stuff
-        homeButton = (Button) findViewById(R.id.register_home);
-        homeButton.setOnClickListener(new View.OnClickListener() {
+        binding.registerHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openMainActivity();
+                //using home button to go back to login screen
+                startActivity(new Intent(Register.this, MainActivity.class));
             }
         });
-    }
-
-    //using home button to go back to login screen
-    public void openMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 }

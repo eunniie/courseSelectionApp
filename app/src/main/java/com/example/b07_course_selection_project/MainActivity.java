@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
 
-    //register button
-    private Button registerButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,19 +39,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //button stuff
-        registerButton = (Button) findViewById(R.id.register_button);
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        binding.registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openActivityRegister();
+                //using register button to go to register screen
+                startActivity(new Intent(MainActivity.this, Register.class));
             }
         });
-    }
-
-    //using register button to go to register screen
-    public void openActivityRegister() {
-        Intent intent = new Intent(this, Register.class);
-        startActivity(intent);
     }
 
     private void signIn(){
