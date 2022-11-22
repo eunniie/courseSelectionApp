@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //binding to the specific activity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         mAuth = FirebaseAuth.getInstance();
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private void signIn(){
         String email = binding.email.getText().toString().trim();
         String password = binding.password.getText().toString().trim();
+
+        //checking validity of input
         if(email.isEmpty()){
             binding.email.setError("Email is required!");
             binding.email.requestFocus();
@@ -66,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
             binding.password.requestFocus();
             return;
         }
+
+        //signing in
         binding.loading.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

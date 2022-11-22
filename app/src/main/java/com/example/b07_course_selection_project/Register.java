@@ -20,6 +20,7 @@ public class Register extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         mAuth = FirebaseAuth.getInstance();
         setContentView(binding.getRoot());
+
         //home button stuff
         binding.registerHome.setOnClickListener(new View.OnClickListener() {
             @Override
