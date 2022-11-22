@@ -15,4 +15,9 @@
     <string name="register_prompt_password">Password, make sure it\'s correct</string>
     <string name="register_button">Register</string>
     <string name="register_home">Home</string>
+    <string name="student_homepage">Student Homepage</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="completed_courses">Completed Courses</string>
+    <string name="add_courses">Add Courses</string>
+    <string name="back">Back</string>
 </resources>
