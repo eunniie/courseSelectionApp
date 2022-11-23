@@ -1,28 +1,22 @@
 package com.example.b07_course_selection_project;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.b07_course_selection_project.MVP.LoginModel;
+import com.example.b07_course_selection_project.MVP.LoginPresenter;
+import com.example.b07_course_selection_project.MVP.LoginView;
 import com.example.b07_course_selection_project.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoginView {
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
+    private LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         mAuth = FirebaseAuth.getInstance();
         setContentView(view);
+        presenter = new LoginPresenter(this, new LoginModel());
         binding.login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -53,38 +48,49 @@ public class MainActivity extends AppCompatActivity {
         String email = binding.email.getText().toString().trim();
         String password = binding.password.getText().toString().trim();
 
-        //checking validity of input
-        if(email.isEmpty()){
-            binding.email.setError("Email is required!");
-            binding.email.requestFocus();
-            return;
-        }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            binding.email.setError("Please provide valid email!");
-            binding.email.requestFocus();
-            return;
-        }
-        if(password.isEmpty()){
-            binding.password.setError("Password is required!");
-            binding.password.requestFocus();
-            return;
-        }
-
-        //signing in
-        binding.loading.setVisibility(View.VISIBLE);
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    // startActivity(new Intent(MainActivity.this, //user panel here));
-                    Toast.makeText(MainActivity.this, "Successfully logged in!", Toast.LENGTH_LONG).show();
-                    binding.loading.setVisibility(View.GONE);
-                }else{
-                    Toast.makeText(MainActivity.this, "Failed to login! Please check credentials!", Toast.LENGTH_LONG).show();
-                    binding.loading.setVisibility(View.GONE);
-                }
-            }
-        });
+        showLoading();
+        presenter.validateCredential(email, password);
     }
 
+    @Override
+    public void EmailError() {
+        hideLoading();
+        binding.email.setError("Email is required!");
+        binding.email.requestFocus();
+    }
+    @Override
+    public void EmailValidError(){
+        hideLoading();
+        binding.email.setError("Please provide valid email!");
+        binding.email.requestFocus();
+    }
+
+    @Override
+    public void passwordError() {
+        hideLoading();
+        binding.password.setError("Password is required!");
+        binding.password.requestFocus();
+    }
+
+    @Override
+    public void showLoading() {
+        binding.loading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        binding.loading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        hideLoading();
+        Toast.makeText(this, "Successfully logged-in!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLoginError() {
+        hideLoading();
+        Toast.makeText(this, "Email and/or Password is incorrect!", Toast.LENGTH_LONG).show();
+    }
 }

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 //TODO: change changeTimeOffered appropriately based on the system of time we are using!
 
 public class Course {
-    private String name;
-    private String code;
-    private ArrayList<String> preReq = new ArrayList<>();
-    private String timeOffered;
+    protected String name;
+    protected String code;
+    protected ArrayList<String> preReq = new ArrayList<>();
+    protected String timeOffered;
 
     public Course(String name, String code, ArrayList<String> preReq, String timeOffered) {
         this.name = name;
