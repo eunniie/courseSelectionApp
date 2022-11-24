@@ -17,23 +17,8 @@ public class LoginModel {
         void onLoginSuccess();
         void onLoginError();
     }
-    public void login(String email, String password, LoginListener inter){
+    protected void login(String email, String password, LoginListener inter){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-        //checking validity of input
-        if(email.isEmpty()){
-            inter.EmailError();
-            return;
-        }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            inter.EmailValidError();
-            return;
-        }
-        if(password.isEmpty()){
-            inter.PasswordError();
-            return;
-        }
-
         //signing in
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

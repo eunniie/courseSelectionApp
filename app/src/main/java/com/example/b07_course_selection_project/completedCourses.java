@@ -24,7 +24,7 @@ public class completedCourses extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         //Set courses codes to ListView
-        coursesList = (ListView) binding.completedCourses;
+        coursesList = (ListView) binding.generatedTimeline;
         String[] arr = {"courses"};
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arr);
         coursesList.setAdapter(arrayAdapter);

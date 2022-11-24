@@ -45,31 +45,41 @@ public class MainActivity extends AppCompatActivity implements LoginView {
     }
 
     private void signIn(){
-        String email = binding.email.getText().toString().trim();
-        String password = binding.password.getText().toString().trim();
-
         showLoading();
-        presenter.validateCredential(email, password);
+        presenter.login();
+    }
+
+    @Override
+    public void displayError(android.widget.EditText i, String message){
+        i.setError(message);
+        i.requestFocus();
+    }
+
+    @Override
+    public String getEmail(){
+        return binding.email.getText().toString().trim();
+    }
+
+    @Override
+    public String getPassword(){
+        return binding.password.getText().toString().trim();
     }
 
     @Override
     public void EmailError() {
         hideLoading();
-        binding.email.setError("Email is required!");
-        binding.email.requestFocus();
+        displayError(binding.email, "Email is required!");
     }
     @Override
     public void EmailValidError(){
         hideLoading();
-        binding.email.setError("Please provide valid email!");
-        binding.email.requestFocus();
+        displayError(binding.email, "Please provide valid email!");
     }
 
     @Override
     public void passwordError() {
         hideLoading();
-        binding.password.setError("Password is required!");
-        binding.password.requestFocus();
+        displayError(binding.password, "Password is required!");
     }
 
     @Override
@@ -83,14 +93,19 @@ public class MainActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
+    public void createText(String message){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onLoginSuccess() {
         hideLoading();
-        Toast.makeText(this, "Successfully logged-in!", Toast.LENGTH_LONG).show();
+        createText("Successfully logged-in!");
     }
 
     @Override
     public void onLoginError() {
         hideLoading();
-        Toast.makeText(this, "Email and/or Password is incorrect!", Toast.LENGTH_LONG).show();
+        createText("Email and/or Password is incorrect!");
     }
 }
