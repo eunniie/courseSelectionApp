@@ -2,15 +2,14 @@ package com.example.b07_course_selection_project.Course;
 
 import java.util.ArrayList;
 
-//TODO: change changeTimeOffered appropriately based on the system of time we are using!
 
 public class Course {
     protected String name;
     protected String code;
     protected ArrayList<String> preReq = new ArrayList<>();
-    protected String timeOffered;
+    protected String [] timeOffered;
 
-    public Course(String name, String code, ArrayList<String> preReq, String timeOffered) {
+    public Course(String name, String code, ArrayList<String> preReq, String [] timeOffered) {
         this.name = name;
         this.code = code;
         this.preReq = preReq;
@@ -32,7 +31,7 @@ public class Course {
         return arr;
     }
 
-    public String getTimeOffered() {
+    public String [] getTimeOffered() {
         return this.timeOffered;
     }
 
@@ -54,7 +53,8 @@ public class Course {
         return false;
     }
 
-    public boolean deleteOnePreReq (Course input) {
+    //checks if input exists before deleting
+    public boolean deleteOnePreReq (String input) {
         int index = this.preReq.indexOf(input);
 
         if (index != -1 && this.preReq.size() != 0)
@@ -65,21 +65,29 @@ public class Course {
         return false;
     }
 
-    public boolean changeTimeOffered (String input) {
-        if (input.equalsIgnoreCase("winter")) {
-            this.timeOffered = input;
+    public boolean addOnePreReq (String input) {
+        if (this.preReq.contains(input)) {
+            return false;
+        }
+        else
+        {
+            this.preReq.add(input);
             return true;
+        }
+    }
+
+    //it doesn't check for the validity of the strings in input. Just checks that there's no more
+    //than 3 sessions for fall, winter and summer
+    public boolean changeTimeOffered (String [] input) {
+
+        if (input == null) {
+            return false;
+        }
+        else if (input.length > 3) {
+            return false;
         }
 
-        else if (input.equalsIgnoreCase("summer")) {
-            this.timeOffered = input;
-            return true;
-        }
-
-        else if (input.equalsIgnoreCase("fall")) {
-            this.timeOffered = input;
-            return true;
-        }
-        return false;
+        this.timeOffered = input;
+        return true;
     }
 }
