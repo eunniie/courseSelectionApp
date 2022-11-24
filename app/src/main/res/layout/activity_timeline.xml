@@ -6,15 +6,24 @@
     android:layout_height="match_parent"
     android:background="#95DBE5FF"
     android:backgroundTint="@color/light_teal"
-    tools:context=".completedCourses">
+    tools:context=".Timeline">
+
+    <ListView
+        android:id="@+id/generated_timeline"
+        android:layout_width="378dp"
+        android:layout_height="464dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/titleText"
+        android:id="@+id/timelinetitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:fontFamily="cursive"
-        android:text="@string/completed_courses"
+        android:text="@string/timeline"
         android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,43 +31,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="124dp"
-        android:layout_height="56dp"
-        android:backgroundTint="@color/grass_green"
-        android:text="@string/add_courses"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/titleSubtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="@string/generatedTimelinesubtext"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.944"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.954" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/back_button2"
-        android:layout_width="124dp"
-        android:layout_height="56dp"
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/grass_green"
         android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.954" />
-
-    <ListView
-        android:id="@+id/generated_timeline"
-        android:layout_width="378dp"
-        android:layout_height="464dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText"
-        app:layout_constraintVertical_bias="0.106" />
-
+        app:layout_constraintVertical_bias="0.976" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.b07_course_selection_project.databinding.ActivityMainBinding;
 import com.example.b07_course_selection_project.databinding.ActivityStudentPanelBinding;
+
+import java.sql.Time;
 
 public class Student_Panel extends AppCompatActivity {
     private ActivityStudentPanelBinding binding;
@@ -18,13 +19,17 @@ public class Student_Panel extends AppCompatActivity {
         binding = ActivityStudentPanelBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Button add_courses = findViewById(R.id.add); //use binding.add as reference to the button instead
-
         //Make button open activity
         binding.completed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Student_Panel.this, completedCourses.class));
+            }
+        });
+        binding.timeline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Student_Panel.this, Timeline.class));
             }
         });
     }

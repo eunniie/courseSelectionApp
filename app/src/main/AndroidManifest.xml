@@ -13,21 +13,7 @@
         android:theme="@style/Theme.B07courseselectionproject"
         tools:targetApi="31">
         <activity
-            android:name=".Student_Panel"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".completedCourses"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Register"
+            android:name=".Timeline"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -45,16 +31,6 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-
-        <activity android:name=".completedCourses"
-            android:exported="true"
-            tools:ignore="DuplicateActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
