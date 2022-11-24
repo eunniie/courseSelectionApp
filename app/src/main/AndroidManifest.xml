@@ -20,6 +20,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".Timeline"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".completedCourses"
             android:exported="false">
             <meta-data

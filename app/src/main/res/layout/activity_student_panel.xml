@@ -36,20 +36,21 @@
         android:id="@+id/completed"
         android:layout_width="170dp"
         android:layout_height="120dp"
-        android:layout_marginTop="112dp"
         android:layout_marginBottom="72dp"
         android:backgroundTint="@color/grass_green"
         android:text="@string/completed_courses"
         app:layout_constraintBottom_toTopOf="@+id/timeline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TitleSubtext"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/timeline"
         android:layout_width="170dp"
         android:layout_height="120dp"
-        android:layout_marginBottom="196dp"
+        android:layout_marginBottom="160dp"
         android:backgroundTint="@color/grass_green"
         android:text="@string/generate_timeline"
         app:layout_constraintBottom_toBottomOf="parent"
