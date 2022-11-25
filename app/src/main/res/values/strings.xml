@@ -13,6 +13,7 @@
     <string name="textview">Course database 9000</string>
     <string name="register_prompt_email">Email</string>
     <string name="register_prompt_password">Password, make sure it\'s correct</string>
+    <string name="confirm_pass">Confirm password</string>
     <string name="register_button">Register</string>
     <string name="register_home">Home</string>
     <string name="student_homepage">Student Homepage</string>

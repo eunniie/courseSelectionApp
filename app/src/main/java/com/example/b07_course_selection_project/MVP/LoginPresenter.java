@@ -1,12 +1,10 @@
 package com.example.b07_course_selection_project.MVP;
 
-import android.util.Patterns;
-
 import java.util.regex.Pattern;
 
 public class LoginPresenter implements LoginModel.LoginListener {
     private LoginView loginView;
-    private LoginModel inter;
+    private LoginModel model;
     public static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
             "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                     "\\@" +
@@ -18,7 +16,7 @@ public class LoginPresenter implements LoginModel.LoginListener {
     );
     public LoginPresenter(LoginView loginView, LoginModel inter){
         this.loginView = loginView;
-        this.inter = inter;
+        this.model = inter;
     }
     @Override
     public void EmailError() {
@@ -40,13 +38,13 @@ public class LoginPresenter implements LoginModel.LoginListener {
 
     @Override
     public void onLoginSuccess() {
-        if(inter != null)
+        if(model != null)
             loginView.onLoginSuccess();
     }
 
     @Override
     public void onLoginError() {
-        if(inter != null)
+        if(model != null)
             loginView.onLoginError();
     }
 
@@ -73,7 +71,8 @@ public class LoginPresenter implements LoginModel.LoginListener {
     }
 
     public void login(){
-        if(loginView != null && checkEmail() && checkPassword())
-            inter.login(loginView.getEmail(), loginView.getPassword(), this);
+        if(loginView != null && checkEmail() && checkPassword()){
+            model.login(loginView.getEmail(), loginView.getPassword(), this);
+        }
     }
 }

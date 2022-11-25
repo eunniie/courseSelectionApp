@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements LoginView {
     public void onLoginSuccess() {
         hideLoading();
         createText("Successfully logged-in!");
+
     }
 
     @Override

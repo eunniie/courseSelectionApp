@@ -17,7 +17,7 @@ public class LoginModel {
         void onLoginSuccess();
         void onLoginError();
     }
-    protected void login(String email, String password, LoginListener inter){
+    public void login(String email, String password, LoginListener inter){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         //signing in
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
