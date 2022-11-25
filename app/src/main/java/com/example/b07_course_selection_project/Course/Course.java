@@ -24,11 +24,8 @@ public class Course {
         return this.code;
     }
 
-    public Course [] getPreReq() {
-        Course [] arr = new Course[preReq.size()];
-        arr = preReq.toArray(arr); //making sure the array has the size and is of the same type
-
-        return arr;
+    public ArrayList<String> getPreReq() {
+        return preReq;
     }
 
     public String [] getTimeOffered() {
