@@ -8,15 +8,6 @@
     android:backgroundTint="@color/light_teal"
     tools:context=".Timeline">
 
-    <ListView
-        android:id="@+id/generated_timeline"
-        android:layout_width="378dp"
-        android:layout_height="464dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/timelinetitle"
         android:layout_width="wrap_content"
@@ -53,5 +44,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
+
+    <ListView
+        android:id="@+id/timeline"
+        android:layout_width="378dp"
+        android:layout_height="464dp"
+        app:layout_constraintBottom_toTopOf="@+id/back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleSubtext" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
