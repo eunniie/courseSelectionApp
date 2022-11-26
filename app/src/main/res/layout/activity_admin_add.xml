@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Admin_add">
+
+    <Button
+        android:id="@+id/add_courses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/grass_green"
+        android:text="Add Course"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adding Course"
+        android:textSize="100px"
+        android:fontFamily="sans-serif-black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+    <EditText
+        android:id="@+id/coursecode"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="21dp"
+
+        android:layout_marginBottom="21dp"
+        android:inputType="text"
+        android:textSize="20sp"
+        android:layout_marginLeft="20px"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
+        android:hint="Course Code"
+        android:maxLength="3"/>
+    <EditText
+        android:id="@+id/courselevel"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="21dp"
+        android:layout_marginBottom="21dp"
+        android:inputType="text"
+        android:textSize="20sp"
+        android:layout_marginLeft="20px"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintLeft_toRightOf="@id/coursecode"
+        app:layout_constraintRight_toLeftOf="@id/coursenum"
+        app:layout_constraintHorizontal_bias="0.076"
+        android:hint="Level"
+        android:maxLength="1"/>
+    <EditText
+        android:id="@+id/coursenum"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="21dp"
+        android:layout_marginBottom="21dp"
+        android:inputType="text"
+        android:textSize="20sp"
+        android:layout_marginLeft="20px"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintLeft_toRightOf="@id/courselevel"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintRight_toRightOf="parent"
+        android:hint="Course Number"
+        android:maxLength="2"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

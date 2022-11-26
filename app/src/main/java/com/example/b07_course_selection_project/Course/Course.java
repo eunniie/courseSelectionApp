@@ -1,15 +1,30 @@
 package com.example.b07_course_selection_project.Course;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Course {
     protected String name;
     protected String code;
-    protected ArrayList<String> preReq = new ArrayList<>();
-    protected String [] timeOffered;
+    protected List<String> preReq = new ArrayList<>();
+    protected List<String> timeOffered;
 
-    public Course(String name, String code, ArrayList<String> preReq, String [] timeOffered) {
+    public Course(String name, String code){
+        this.name = name;
+        this.code = code;
+        this.preReq = new ArrayList<String>();
+        this.timeOffered = new ArrayList<String>();
+    }
+
+    public Course(String name, String code, List<String> timeOffered){
+        this.name = name;
+        this.code = code;
+        this.preReq = new ArrayList<String>();
+        this.timeOffered = timeOffered;
+    }
+
+    public Course(String name, String code, List<String> preReq, List<String> timeOffered) {
         this.name = name;
         this.code = code;
         this.preReq = preReq;
@@ -24,11 +39,11 @@ public class Course {
         return this.code;
     }
 
-    public ArrayList<String> getPreReq() {
+    public List<String> getPreReq() {
         return preReq;
     }
 
-    public String [] getTimeOffered() {
+    public List<String> getTimeOffered() {
         return this.timeOffered;
     }
 
@@ -75,12 +90,12 @@ public class Course {
 
     //it doesn't check for the validity of the strings in input. Just checks that there's no more
     //than 3 sessions for fall, winter and summer
-    public boolean changeTimeOffered (String [] input) {
+    public boolean changeTimeOffered (List<String> input) {
 
         if (input == null) {
             return false;
         }
-        else if (input.length > 3) {
+        else if (input.size() > 3) {
             return false;
         }
 
