@@ -1,14 +1,21 @@
 package com.example.b07_course_selection_project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.b07_course_selection_project.databinding.ActivityAdminAddBinding;
 import com.example.b07_course_selection_project.databinding.ActivityRegisterBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +47,7 @@ public class Admin_add extends AppCompatActivity {
     }
     private void showSelector(){
         //create alertdialog
+        binding.sessionselector.setError(null);
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 Admin_add.this
         );
@@ -104,6 +112,28 @@ public class Admin_add extends AppCompatActivity {
         }
         String level = binding.courselevel.getText().toString().trim();
         List<String> sessions = fetchSession();
+        if(!checkCourseType(coursetype))
+            return;
+        if(!checkLevel(level))
+            return;
+        if(!checkCourseNum(coursenum))
+            return;
+        if(!checkSessions(sessions))
+            return;
+        String courseCode = coursetype + level + coursenum;
+        //TODO grab data from prerequisite
+        FirebaseDatabase.getInstance().getReference("PastCourses").child(courseCode).setValue(courseCode).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(Admin_add.this, "Course added!", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(Admin_add.this, "Course failed to be added!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
     private boolean checkCourseType(String coursetype){
         if(coursetype.isEmpty()){
