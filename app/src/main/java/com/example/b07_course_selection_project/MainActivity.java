@@ -125,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements LoginView {
                 return;
             }
         });
+        binding.email.setText("");
+        binding.password.setText("");
     }
 
     @Override

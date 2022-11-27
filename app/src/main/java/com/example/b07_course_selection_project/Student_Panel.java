@@ -38,6 +38,13 @@ public class Student_Panel extends AppCompatActivity {
         //make button display dialog
         subtitleChange();
         binding.timeline.setOnClickListener(view -> displayAddCourses());
+        binding.logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        });
     }
 
     private void subtitleChange(){
