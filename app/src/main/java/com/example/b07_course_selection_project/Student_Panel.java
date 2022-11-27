@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.example.b07_course_selection_project.Course.Course;
 import com.example.b07_course_selection_project.databinding.ActivityStudentPanelBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +36,29 @@ public class Student_Panel extends AppCompatActivity {
             }
         });
         //make button display dialog
+        subtitleChange();
         binding.timeline.setOnClickListener(view -> displayAddCourses());
+    }
+
+    private void subtitleChange(){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Students").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        rootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    binding.TitleSubtext.setText("Welcome back " + snapshot.child("lastname").getValue(String.class) + "!");
+                }
+                else{
+                    binding.TitleSubtext.setText("Welcome back Student!");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        binding.TitleSubtext.setText("Welcome back ");
     }
 
     //To get the courses that the student wants to take in the future:
@@ -43,8 +66,7 @@ public class Student_Panel extends AppCompatActivity {
         List<String> courses = new ArrayList<>();
 
         //TODO: Add example courses in firebase to check if this works:
-        DatabaseReference ref = FirebaseDatabase.getInstance("https://b07-course-" +
-                "selector-default-rtdb.firebaseio.com/").getReference().child("Courses");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Courses");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

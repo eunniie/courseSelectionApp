@@ -1,9 +1,11 @@
 package com.example.b07_course_selection_project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,6 +14,12 @@ import com.example.b07_course_selection_project.MVP.LoginPresenter;
 import com.example.b07_course_selection_project.MVP.LoginView;
 import com.example.b07_course_selection_project.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements LoginView {
     private ActivityMainBinding binding;
@@ -101,7 +109,22 @@ public class MainActivity extends AppCompatActivity implements LoginView {
     public void onLoginSuccess() {
         hideLoading();
         createText("Successfully logged-in!");
-
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Admins").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    //admin panel
+                }
+                else{
+                    startActivity(new Intent(MainActivity.this, Student_Panel.class));
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                return;
+            }
+        });
     }
 
     @Override
