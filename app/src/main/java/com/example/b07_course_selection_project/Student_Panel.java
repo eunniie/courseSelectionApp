@@ -74,7 +74,7 @@ public class Student_Panel extends AppCompatActivity {
                 //iterate through each course in courses
                 for (DataSnapshot snap: snapshot.getChildren()){
                     Course c = snap.getValue(Course.class);
-                    courses.add(c.getCourseCode());
+                    courses.add(c.getCode());
                 }
             }
             @Override

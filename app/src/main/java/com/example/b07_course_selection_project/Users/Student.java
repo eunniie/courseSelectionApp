@@ -1,7 +1,6 @@
 package com.example.b07_course_selection_project.Users;
 
 import com.example.b07_course_selection_project.Course.Course;
-import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class Student extends User{
     }
 
     public void addCoursesCode(Course course1){
-        this.completedCoursesCode.add(course1.getCourseCode());
+        this.completedCoursesCode.add(course1.getCode());
     }
 
     public List<String> getCoursesCode(){

@@ -39,7 +39,7 @@ public class Course {
         return this.name;
     }
 
-    public String getCourseCode() {
+    public String getCode() {
         return this.code;
     }
 
