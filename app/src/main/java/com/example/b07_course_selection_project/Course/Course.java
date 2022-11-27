@@ -5,16 +5,18 @@ import java.util.List;
 
 
 public class Course {
-    protected String name;
-    protected String code;
-    protected List<String> preReq = new ArrayList<>();
-    protected List<String> timeOffered;
+    public String name;
+    public String code;
+    public List<String> preReq = new ArrayList<>();
+    public List<String> timeOffered;
+    public List<String> uid;
 
     public Course(String name, String code){
         this.name = name;
         this.code = code;
         this.preReq = new ArrayList<String>();
         this.timeOffered = new ArrayList<String>();
+        this.uid = new ArrayList<String>();
     }
 
     public Course(String name, String code, List<String> timeOffered){
@@ -22,6 +24,7 @@ public class Course {
         this.code = code;
         this.preReq = new ArrayList<String>();
         this.timeOffered = timeOffered;
+        this.uid = new ArrayList<String>();
     }
 
     public Course(String name, String code, List<String> preReq, List<String> timeOffered) {
@@ -29,6 +32,7 @@ public class Course {
         this.code = code;
         this.preReq = preReq;
         this.timeOffered = timeOffered;
+        this.uid = new ArrayList<String>();
     }
 
     public String getName() {
@@ -86,6 +90,11 @@ public class Course {
             this.preReq.add(input);
             return true;
         }
+    }
+
+    public boolean addTimeOffered(String input){
+        this.timeOffered.add(input);
+        return true;
     }
 
     //it doesn't check for the validity of the strings in input. Just checks that there's no more
