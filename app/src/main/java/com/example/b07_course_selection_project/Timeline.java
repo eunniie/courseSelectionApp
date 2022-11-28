@@ -14,19 +14,25 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.b07_course_selection_project.Course.Course;
+import com.example.b07_course_selection_project.Users.Student;
 import com.example.b07_course_selection_project.databinding.ActivityTimelineBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Timeline extends AppCompatActivity {
     private ActivityTimelineBinding binding;
     private List<String> selected = new ArrayList<>();
+    private List<String> completedCourses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,7 @@ public class Timeline extends AppCompatActivity {
         binding = ActivityTimelineBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getCompletedCourses();
         getSelection();
 
         //Make button open activity
@@ -47,6 +54,24 @@ public class Timeline extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getSelection();
+            }
+        });
+    }
+
+    private void getCompletedCourses(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child("Students").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("completedCoursesCode");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap: snapshot.getChildren()){
+                    completedCourses.add(snap.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -66,7 +91,9 @@ public class Timeline extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap: snapshot.getChildren()){
                     Course c = snap.getValue(Course.class);
-                    courses.add(c.getCode());
+                    if (!completedCourses.contains(c.getCode())){
+                        courses.add(c.getCode());
+                    }
                 }
                 if (courses.isEmpty()){
                     new AlertDialog.Builder(Timeline.this).setMessage
@@ -108,6 +135,18 @@ public class Timeline extends AppCompatActivity {
         binding.gen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (selected.isEmpty()){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(Timeline.this);
+                    dialog.setMessage("Please select at least one course");
+                    dialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    dialog.show();
+                    return;
+                }
                 courses.clear();
                 arrayAdapter.notifyDataSetChanged();
                 for (String s :selected){
