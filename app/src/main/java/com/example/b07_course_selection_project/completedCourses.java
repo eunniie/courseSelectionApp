@@ -54,7 +54,7 @@ public class completedCourses extends AppCompatActivity {
 
         //Set courses codes to ListView
         getCompletedCourses();
-        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,completedCourses);
+        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, completedCourses);
         coursesList.setAdapter(arrayAdapter1);
 
         //Make button open activity
@@ -78,6 +78,7 @@ public class completedCourses extends AppCompatActivity {
                 binding.searchCourse.setVisibility(View.VISIBLE);
                 mCursor = getContentResolver().query(null, null, null, null, null);
                 getCourses();
+                code = new String[courses.size()];
                 int j = 0;
                 for (Course i:courses){
                     code[j] = i.getCode();
