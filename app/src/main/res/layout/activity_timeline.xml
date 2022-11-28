@@ -27,32 +27,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="@string/generatedTimelinesubtext"
+        android:text="@string/selectCourses"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/back"
-        android:layout_width="wrap_content"
+        android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grass_green"
-        android:text="@string/back"
+        android:text="@string/home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeline"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/gen"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/grass_green"
+        android:text="@string/generate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/restart"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toBottomOf="@+id/timeline"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/restart"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/grass_green"
+        android:text="@string/restart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintTop_toBottomOf="@+id/timeline"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ListView
         android:id="@+id/timeline"
-        android:layout_width="378dp"
-        android:layout_height="464dp"
-        app:layout_constraintBottom_toTopOf="@+id/back"
+        android:layout_width="381dp"
+        android:layout_height="440dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSubtext" />
+        app:layout_constraintTop_toBottomOf="@+id/titleSubtext"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

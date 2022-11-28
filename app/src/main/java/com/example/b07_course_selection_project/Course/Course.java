@@ -11,6 +11,10 @@ public class Course {
     public List<String> timeOffered;
     public List<String> uid;
 
+    //need empty constructor b/c reading from firebase crashes without it
+    public Course(){
+    }
+
     public Course(String name, String code){
         this.name = name;
         this.code = code;
@@ -47,9 +51,7 @@ public class Course {
         return preReq;
     }
 
-    public List<String> getTimeOffered() {
-        return this.timeOffered;
-    }
+    public List<String> getTimeOffered() { return this.timeOffered; }
 
     public boolean changeName (String input) {
         if (input != null)

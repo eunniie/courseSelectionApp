@@ -20,8 +20,12 @@
     <string name="welcome_back">Welcome Back!</string>
     <string name="completed_courses">Completed Courses</string>
     <string name="add_courses">Add Courses</string>
-    <string name="back">Back</string>
+    <string name="home">Home</string>
     <string name="generate_timeline">Generate Timeline</string>
     <string name="timeline">Timeline</string>
+    <string name="selectCourses">Select the course(s) you\'d like to take:</string>
+    <string name="generate">Generate</string>
+    <string name="restart">Restart</string>
+    <string name="back">Back</string>
     <string name="generatedTimelinesubtext">Here is your generated timeline!</string>
 </resources>

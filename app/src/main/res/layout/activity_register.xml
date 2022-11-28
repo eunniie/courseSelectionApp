@@ -105,29 +105,28 @@
         android:id="@+id/register_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:backgroundTint="@color/grass_green"
         android:text="@string/register_button"
-        android:layout_marginTop="21dp"
-        app:layout_constraintBottom_toTopOf="@+id/register_home"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confPassword"
-        app:layout_constraintVertical_bias="0.519" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/register_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
         android:backgroundTint="@color/grass_green"
         android:text="@string/register_home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_register"
-        app:layout_constraintVertical_bias="0.497" />
+        app:layout_constraintTop_toBottomOf="@+id/register_info"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
         android:id="@+id/loading"
