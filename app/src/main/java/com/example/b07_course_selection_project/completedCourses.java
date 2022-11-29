@@ -30,29 +30,33 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-//TODO: move the functionality for displaying courses in the list view outside of onCreate
-//TODO: implement getCourses using the same way as displaying the couress
+//TODO: implement getCourses using the same way as displaying the course
 
 public class completedCourses extends AppCompatActivity {
     private ActivityCompletedCoursesBinding binding;
-    private FirebaseAuth mAuth;
     private List<String> completedCourses = new ArrayList<>();
     private List<Course> courses =new ArrayList<>();
-    private String[] code;
-    private Cursor mCursor;
-    private SimpleCursorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCompletedCoursesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        //mAuth = FirebaseAuth.getInstance();
         binding.searchCourse.setVisibility(View.GONE);
-        //search = (SearchView) binding.searchCourse;
 
-        //Set courses codes to ListView
+        getCompletedCourses();
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(completedCourses.this, Student_Panel.class));
+            }
+        });
+
+    }
+
+    //Set completed courses to ListView
+    private void getCompletedCourses(){
         ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, completedCourses);
 
         binding.courseList.setAdapter(arrayAdapter1);
@@ -72,7 +76,6 @@ public class completedCourses extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void getCourses() {
