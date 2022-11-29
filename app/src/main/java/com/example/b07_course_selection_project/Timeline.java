@@ -7,7 +7,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -34,6 +36,7 @@ public class Timeline extends AppCompatActivity {
     private List<String> selected = new ArrayList<>();
     private List<String> completedCourses = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,10 @@ public class Timeline extends AppCompatActivity {
         binding.restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selected.clear();
+                completedCourses.clear();
+                binding.gen.setVisibility(View.VISIBLE);
+                getCompletedCourses();
                 getSelection();
             }
         });
@@ -149,11 +156,17 @@ public class Timeline extends AppCompatActivity {
                 }
                 courses.clear();
                 arrayAdapter.notifyDataSetChanged();
-                for (String s :selected){
-                    Toast.makeText(Timeline.this,s, Toast.LENGTH_SHORT).show();
-                }
-                return;
+                binding.timeline.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
+                binding.gen.setVisibility(View.INVISIBLE);
+                binding.timeline.setAdapter(arrayAdapter);
             }
         });
     }
+    private void showTimeline(List<String> timeline){
+        ArrayAdapter<String> adapter = new
+                ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, timeline);
+        binding.timeline.setAdapter(adapter);
+    }
+
 }
