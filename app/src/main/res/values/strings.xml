@@ -27,7 +27,6 @@
     <string name="generate">Generate</string>
     <string name="restart">Restart</string>
     <string name="back">Back</string>
-    <string name="generatedTimelinesubtext">Here is your generated timeline!</string>
     <string name="registration">Registration</string>
     <string name="i_am_an_administrator_not_a_student">I am an administrator, not a student.</string>
     <string name="firstname">Firstname</string>
