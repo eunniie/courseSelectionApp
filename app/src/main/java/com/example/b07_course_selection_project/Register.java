@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.b07_course_selection_project.Users.Admin;
 import com.example.b07_course_selection_project.Users.Student;
 import com.example.b07_course_selection_project.Users.User;
-import com.example.b07_course_selection_project.databinding.ActivityMainBinding;
 import com.example.b07_course_selection_project.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -51,6 +49,7 @@ public class Register extends AppCompatActivity {
         String firstname = binding.FirstnameInput.getText().toString().trim();
         String lastname = binding.LastnameInput.getText().toString().trim();
         String confPassword = binding.confPassword.getText().toString().trim();
+        boolean isAdmin = binding.adminCheckbox.isChecked();
 
         if(firstname.isEmpty()){
             binding.FirstnameInput.setError("Firstname is required!");
@@ -78,7 +77,7 @@ public class Register extends AppCompatActivity {
             return;
         }
         if(password.length() < 6){
-            binding.passwordRegister.setError("Password has to have atleast 6 characters!");
+            binding.passwordRegister.setError("Password has to have at least 6 characters!");
             binding.passwordRegister.requestFocus();
             return;
         }
@@ -94,8 +93,16 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new Student(firstname, lastname, email);
-                            FirebaseDatabase.getInstance().getReference("Users").child("Students")
+                            User user = null;
+                            String child_name = "";
+                            if(isAdmin) {
+                                user = new Admin(firstname, lastname, email);
+                                child_name = "Admins";
+                            } else {
+                                user = new Student(firstname, lastname, email);
+                                child_name = "Students";
+                            }
+                            FirebaseDatabase.getInstance().getReference("Users").child(child_name)
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
