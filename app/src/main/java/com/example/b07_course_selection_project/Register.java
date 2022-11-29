@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.b07_course_selection_project.Users.Admin;
 import com.example.b07_course_selection_project.Users.Student;
 import com.example.b07_course_selection_project.Users.User;
-import com.example.b07_course_selection_project.databinding.ActivityMainBinding;
 import com.example.b07_course_selection_project.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -78,7 +76,7 @@ public class Register extends AppCompatActivity {
             return;
         }
         if(password.length() < 6){
-            binding.passwordRegister.setError("Password has to have atleast 6 characters!");
+            binding.passwordRegister.setError("Password has to have at least 6 characters!");
             binding.passwordRegister.requestFocus();
             return;
         }

@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.b07_course_selection_project.Course.Course;
 import com.example.b07_course_selection_project.databinding.ActivityAdminAddBinding;
-import com.example.b07_course_selection_project.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;

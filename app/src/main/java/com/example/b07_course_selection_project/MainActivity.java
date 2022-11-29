@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.b07_course_selection_project.MVP.LoginModel;
 import com.example.b07_course_selection_project.MVP.LoginPresenter;
 import com.example.b07_course_selection_project.MVP.LoginView;
+import com.example.b07_course_selection_project.Users.Admin;
 import com.example.b07_course_selection_project.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements LoginView {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    //admin panel
+                    startActivity(new Intent(MainActivity.this, Admin_Panel.class));
                 }
                 else{
                     startActivity(new Intent(MainActivity.this, Student_Panel.class));

@@ -110,14 +110,15 @@
         android:id="@+id/register_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-150dp"
+        android:layout_marginBottom="252dp"
         android:backgroundTint="@color/grass_green"
         android:text="@string/register_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_checkbox" />
+        app:layout_constraintTop_toBottomOf="@+id/confPassword"
+        app:layout_constraintVertical_bias="0.391" />
 
     <Button
         android:id="@+id/register_home"
@@ -145,14 +146,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
-
-    <CheckBox
-        android:id="@+id/registration_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
-        android:text="@string/i_am_an_administrator_not_a_student"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confPassword" />
 </androidx.constraintlayout.widget.ConstraintLayout>
