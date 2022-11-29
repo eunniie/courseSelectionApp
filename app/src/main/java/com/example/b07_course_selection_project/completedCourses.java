@@ -49,7 +49,7 @@ public class completedCourses extends AppCompatActivity {
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(completedCourses.this, Student_Panel.class));
+                finish();
             }
         });
 

@@ -51,7 +51,23 @@ public class Timeline extends AppCompatActivity {
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Timeline.this, Student_Panel.class));
+                finish();
+            }
+        });
+        binding.gen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selected.isEmpty()){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(Timeline.this);
+                    dialog.setMessage("Please select at least one course");
+                    dialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
         binding.restart.setOnClickListener(new View.OnClickListener() {
