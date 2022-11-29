@@ -84,7 +84,7 @@ public class completedCourses extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (binding.searchCourse.getVisibility() == View.GONE) {
-                    startActivity(new Intent(completedCourses.this, Student_Panel.class));
+                    finish();
                 }
                 else{
                     binding.courseList.setAdapter(arrayAdapter1);
