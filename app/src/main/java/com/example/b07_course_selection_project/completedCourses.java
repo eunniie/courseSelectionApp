@@ -39,26 +39,43 @@ public class completedCourses extends AppCompatActivity {
     private String[] code;
     private Cursor mCursor;
     private SimpleCursorAdapter mAdapter;
-    ListView coursesList;
-    SearchView search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCompletedCoursesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        mAuth = FirebaseAuth.getInstance();
-
+        //mAuth = FirebaseAuth.getInstance();
         binding.searchCourse.setVisibility(View.GONE);
-        search = (SearchView) binding.searchCourse;
+        //search = (SearchView) binding.searchCourse;
 
         //Set courses codes to ListView
-        getCompletedCourses();
         ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, completedCourses);
-        coursesList.setAdapter(arrayAdapter1);
+
+        binding.courseList.setAdapter(arrayAdapter1);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child("Students").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("completedCoursesCode");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap: snapshot.getChildren()){
+                    completedCourses.add(snap.getValue(String.class));
+                    arrayAdapter1.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Log.d("COMPLETED COURSES: ", completedCourses.toString());
+
+
+
 
         //Make button open activity
-        binding.backButton.setOnClickListener(new View.OnClickListener() {
+        /*binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (binding.searchCourse.getVisibility() == View.GONE) {
@@ -132,23 +149,7 @@ public class completedCourses extends AppCompatActivity {
                     }
                 });
             }
-        }));
-    }
-
-    private void getCompletedCourses(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child("Students").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("completedCoursesCode");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snap: snapshot.getChildren()){
-                    completedCourses.add(snap.getValue(String.class));
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+        }));*/
     }
 
     private void getCourses() {

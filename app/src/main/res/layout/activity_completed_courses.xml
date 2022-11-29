@@ -49,7 +49,7 @@
         app:layout_constraintVertical_bias="0.954" />
 
     <ListView
-        android:id="@+id/course_list"
+        android:id="@+id/courseList"
         android:layout_width="378dp"
         android:layout_height="464dp"
         android:layout_marginTop="36dp"
@@ -64,7 +64,7 @@
         android:id="@+id/search_course"
         android:layout_width="380dp"
         android:layout_height="53dp"
-        app:layout_constraintBottom_toTopOf="@+id/course_list"
+        app:layout_constraintBottom_toTopOf="@+id/courseList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
