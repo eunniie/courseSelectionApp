@@ -49,6 +49,7 @@ public class Register extends AppCompatActivity {
         String firstname = binding.FirstnameInput.getText().toString().trim();
         String lastname = binding.LastnameInput.getText().toString().trim();
         String confPassword = binding.confPassword.getText().toString().trim();
+        boolean isAdmin = binding.adminCheckbox.isChecked();
 
         if(firstname.isEmpty()){
             binding.FirstnameInput.setError("Firstname is required!");
@@ -92,8 +93,16 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new Student(firstname, lastname, email);
-                            FirebaseDatabase.getInstance().getReference("Users").child("Students")
+                            User user = null;
+                            String child_name = "";
+                            if(isAdmin) {
+                                user = new Admin(firstname, lastname, email);
+                                child_name = "Admins";
+                            } else {
+                                user = new Student(firstname, lastname, email);
+                                child_name = "Students";
+                            }
+                            FirebaseDatabase.getInstance().getReference("Users").child(child_name)
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
