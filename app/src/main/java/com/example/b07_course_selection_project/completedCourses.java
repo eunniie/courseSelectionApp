@@ -31,6 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: move the functionality for displaying courses in the list view outside of onCreate
+//TODO: implement getCourses using the same way as displaying the couress
+
 public class completedCourses extends AppCompatActivity {
     private ActivityCompletedCoursesBinding binding;
     private FirebaseAuth mAuth;
@@ -69,87 +72,7 @@ public class completedCourses extends AppCompatActivity {
 
             }
         });
-        Log.d("COMPLETED COURSES: ", completedCourses.toString());
 
-
-
-
-        //Make button open activity
-        /*binding.backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (binding.searchCourse.getVisibility() == View.GONE) {
-                    startActivity(new Intent(completedCourses.this, Student_Panel.class));
-                }
-                else{
-                    coursesList.setAdapter(arrayAdapter1);
-                    binding.searchCourse.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        //Set up the add button
-        binding.addCourses.setOnClickListener((new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                binding.searchCourse.setVisibility(View.VISIBLE);
-                mCursor = getContentResolver().query(null, null, null, null, null);
-                getCourses();
-                code = new String[courses.size()];
-                int j = 0;
-                for (Course i:courses){
-                    code[j] = i.getCode();
-                    j++;
-                }
-                mAdapter = new SimpleCursorAdapter(null, android.R.layout.simple_list_item_1, mCursor,
-                        code, new int[] { android.R.id.text1 }, 0);
-                coursesList.setAdapter(mAdapter);
-                coursesList.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-                    @Override
-                    public void onScrollStateChanged(AbsListView view, int scrollState) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if (imm != null) {
-                            imm.hideSoftInputFromWindow(coursesList.getWindowToken(), 0);
-                        }
-                    }
-
-                    @Override
-                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    }
-                });
-
-                search.setIconifiedByDefault(false);
-                search.setSubmitButtonEnabled(true);
-                search.onActionViewExpanded();
-                search.setQueryHint("Enter course code");
-                search.setBackgroundColor(0x22ff00ff);
-
-                search.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
-                    private String TAG = getClass().getSimpleName();
-                    @Override
-                    public boolean onQueryTextChange(String queryText) {
-                        Log.d(TAG, "onQueryTextChange = " + queryText);
-                        String selection = code + " LIKE '%" + queryText + "%' " + " OR "
-                                + code + " LIKE '%" + queryText + "%' ";
-                        mCursor = getContentResolver().query(null, null, selection, null, null);
-                        mAdapter.swapCursor(mCursor);
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onQueryTextSubmit(String queryText) {
-                        Log.d(TAG, "onQueryTextSubmit = " + queryText);
-                        if (search != null) {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            if (imm != null) {
-                                imm.hideSoftInputFromWindow(search.getWindowToken(), 0);                 }
-                                search.clearFocus();               }
-                                return true;
-                    }
-                });
-            }
-        }));*/
     }
 
     private void getCourses() {
