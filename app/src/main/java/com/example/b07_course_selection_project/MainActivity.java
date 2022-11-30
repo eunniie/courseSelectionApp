@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.example.b07_course_selection_project.MVP.LoginModel;
 import com.example.b07_course_selection_project.MVP.LoginPresenter;
 import com.example.b07_course_selection_project.MVP.LoginView;
-import com.example.b07_course_selection_project.Users.Admin;
 import com.example.b07_course_selection_project.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,10 +29,25 @@ public class MainActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         //binding to the specific activity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
         mAuth = FirebaseAuth.getInstance();
-        setContentView(view);
+        setContentView(binding.getRoot());
         presenter = new LoginPresenter(this, new LoginModel());
+        binding.admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.email.setText("admin@admin.com");
+                binding.password.setText("superadmin");
+                signIn();
+            }
+        });
+        binding.student.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.email.setText("student@test.com");
+                binding.password.setText("1234567");
+                signIn();
+            }
+        });
         binding.login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

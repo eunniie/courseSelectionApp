@@ -40,9 +40,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:layout_marginTop="21dp"
-
+        android:textAllCaps="true"
         android:layout_marginBottom="21dp"
-        android:inputType="text"
+        android:inputType="textCapCharacters"
         android:textSize="20sp"
         android:layout_marginLeft="20px"
         app:layout_constraintTop_toBottomOf="@id/title"
@@ -57,7 +57,8 @@
         android:ems="10"
         android:layout_marginTop="21dp"
         android:layout_marginBottom="21dp"
-        android:inputType="text"
+        android:inputType="textCapCharacters"
+        android:textAllCaps="true"
         android:textSize="20sp"
         android:layout_marginLeft="20px"
         app:layout_constraintTop_toBottomOf="@id/title"
@@ -101,8 +102,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:layout_marginLeft="20px"
-        android:layout_marginRight="20px"
+        android:layout_marginLeft="32px"
+        android:layout_marginRight="32px"
         app:layout_constraintTop_toBottomOf="@id/coursename"
         android:layout_marginTop="21dp"
         android:padding="12dp"
@@ -114,23 +115,17 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         />
-    <TextView
-        android:id="@+id/prereqselector"
+
+    <com.example.b07_course_selection_project.MultiSelect.MultiSpinnerSearch
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginLeft="20px"
-        android:layout_marginRight="20px"
-        app:layout_constraintTop_toBottomOf="@id/sessionselector"
-        android:layout_marginTop="21dp"
-        android:padding="12dp"
-        android:hint="Select Prerequisites (Optional)"
-        android:drawablePadding="16dp"
-        android:drawableEnd="@android:drawable/arrow_down_float"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
         android:background="@android:drawable/editbox_background"
+        android:drawableEnd="@android:drawable/arrow_down_float"
         android:textSize="20sp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        />
+        app:hintText="Select Prerequisites (OPTIONAL)"
+        app:layout_constraintTop_toBottomOf="@id/sessionselector"
+        tools:layout_editor_absoluteX="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

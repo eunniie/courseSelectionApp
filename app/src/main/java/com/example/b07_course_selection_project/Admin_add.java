@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.b07_course_selection_project.Course.Course;
+import com.example.b07_course_selection_project.MultiSelect.KeyPairBoolData;
 import com.example.b07_course_selection_project.databinding.ActivityAdminAddBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -29,9 +32,7 @@ import java.util.List;
 public class Admin_add extends AppCompatActivity {
     ActivityAdminAddBinding binding;
 
-    boolean[] selectedCourse;
-    List<Integer> courseList = new ArrayList<Integer>();
-    String[] courseArray;
+    List<KeyPairBoolData> courseList;
 
 
 
@@ -55,20 +56,16 @@ public class Admin_add extends AppCompatActivity {
                 addCourse();
             }
         });
-        initSele(selectedSession, sessionArray, sessionList);
+        clearAll();
         binding.sessionselector.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                showSelector(binding.sessionselector, "Select Sessions", selectedSession, sessionArray, sessionList);
+                showSelector(binding.sessionselector, "Select Sessions");
             }
         });
         fetchCourses();
-        binding.prereqselector.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSelector(binding.prereqselector, "Select Prerequisites (Optional)", selectedCourse, courseArray, courseList);
-            }
-        });
+        binding.spinner.setSearchEnabled(true);
+        binding.spinner.setSearchHint("Type here to search!");
         binding.clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,23 +74,21 @@ public class Admin_add extends AppCompatActivity {
         });
 
     }
-    private void initSele(boolean[] selected, String[] selections, List<Integer> selector){
-        selected = new boolean[selections.length];
-        selector.clear();
-
+    private void initSele(){
+        selectedSession = new boolean[sessionArray.length];
+        sessionList.clear();
     }
     private void fetchCourses(){
         List<String> result = new ArrayList<String>();
-        FirebaseDatabase.getInstance().getReference("PastCourses").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Courses").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data:snapshot.getChildren()){
-                    result.add(data.getValue().toString());
+                    result.add(data.child("code").getValue().toString());
                 }
                 Collections.sort(result);
-                courseArray = new String[result.size()];
-                courseArray = result.toArray(courseArray);
-                selectedCourse = new boolean[courseArray.length];
+                populatePair(result);
+                showSearchSelector();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -102,7 +97,25 @@ public class Admin_add extends AppCompatActivity {
         });
     }
 
-    private void showSelector(TextView v, String text, boolean[] selected, String[] displayArray, List<Integer> selector){
+    private void populatePair(List<String> list){
+        courseList = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            KeyPairBoolData k = new KeyPairBoolData();
+            k.setId(i+1);
+            k.setName(list.get(i));
+            k.setSelected(false);
+            courseList.add(k);
+        }
+    }
+
+    private void showSearchSelector(){
+        //create alertdialog
+        binding.spinner.setItems(courseList, items -> {});
+
+
+    }
+
+    private void showSelector(TextView v, String text){
         //create alertdialog
         v.setError(null);
         AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -111,16 +124,16 @@ public class Admin_add extends AppCompatActivity {
         builder.setTitle(text);
         builder.setCancelable(false); //this ignores the back button
         //create a multichoice set
-        builder.setMultiChoiceItems(displayArray, selected, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setMultiChoiceItems(sessionArray, selectedSession, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                 if(b){
                     //if clicked then we add into the selected list
-                    selector.add(i);
-                    Collections.sort(selector);
+                    sessionList.add(i);
+                    Collections.sort(sessionList);
                 }else{
                     //if not we remove
-                    selector.remove(Integer.valueOf(i));
+                    sessionList.remove(Integer.valueOf(i));
                 }
             }
         });
@@ -130,9 +143,9 @@ public class Admin_add extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //make string for display
                 StringBuilder stringBuilder = new StringBuilder();
-                for(int j = 0; j < selector.size(); j++){
-                    stringBuilder.append(displayArray[selector.get(j)]);
-                    if(j != selector.size() - 1){
+                for(int j = 0; j < sessionList.size(); j++){
+                    stringBuilder.append(sessionArray[sessionList.get(j)]);
+                    if(j != sessionList.size() - 1){
                         stringBuilder.append(", ");
                     }
                 }
@@ -151,9 +164,9 @@ public class Admin_add extends AppCompatActivity {
         builder.setNeutralButton("Clear", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                for(int j = 0; j < selected.length; j++){
-                    selected[j] = false;
-                    selector.clear();
+                for(int j = 0; j < selectedSession.length; j++){
+                    selectedSession[j] = false;
+                    sessionList.clear();
                     v.setText("");
                 }
             }
@@ -165,11 +178,9 @@ public class Admin_add extends AppCompatActivity {
         binding.coursenum.setText("");
         binding.coursename.setText("");
         binding.courselevel.setText("");
-        binding.prereqselector.setText("");
         binding.sessionselector.setText("");
-        initSele(selectedSession, sessionArray, sessionList);
+        initSele();
         fetchCourses();
-        initSele(selectedCourse, courseArray, courseList);
     }
     private void addCourse(){
         String coursetype = binding.coursecode.getText().toString().trim();
@@ -202,16 +213,13 @@ public class Admin_add extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()) {
-                                        FirebaseDatabase.getInstance().getReference("PastCourses").child(courseCode).setValue(courseCode).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(Admin_add.this, "Course added!", Toast.LENGTH_LONG).show();
-                                                } else {
-                                                    Toast.makeText(Admin_add.this, "Course failed to be added!", Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        });
+                                        if(!courses.isEmpty())
+                                            notifyNewDepender(courseCode, courses);
+                                        clearAll();
+                                        Toast.makeText(Admin_add.this, "Course added!", Toast.LENGTH_LONG).show();
+                                    }
+                                    else{
+                                        Toast.makeText(Admin_add.this, "Course failed to be added!", Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -226,9 +234,43 @@ public class Admin_add extends AppCompatActivity {
                 return;
             }
         });
-
-
     }
+
+    private void notifyNewDepender(String coursecode, List<String> courses){
+        for(String i:courses){
+            FirebaseDatabase.getInstance().getReference("Courses").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+                    Course temp = snapshot.getValue(Course.class);
+                    if(snapshot.child("dependent").getValue(t) != null)
+                        temp.dependent = snapshot.child("dependent").getValue(t);
+                    else
+                        temp.setDependent(new ArrayList<String>());
+                    if(snapshot.child("preReq").getValue(t) != null)
+                        temp.preReq = snapshot.child("preReq").getValue(t);
+                    else
+                        temp.setPreReq(new ArrayList<String>());
+                    if(snapshot.child("timeOffered").getValue(t) != null)
+                        temp.timeOffered = snapshot.child("timeOffered").getValue(t);
+                    else
+                        temp.setTimeOffered(new ArrayList<String>());
+                    if(snapshot.child("uid").getValue(t) != null)
+                        temp.uid = snapshot.child("uid").getValue(t);
+                    else
+                        temp.setUid(new ArrayList<String>());
+                    temp.dependentAdd(coursecode);
+                    FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    return;
+                }
+            });
+        }
+    }
+
     private boolean checkCourseType(String coursetype){
         if(coursetype.isEmpty()){
             binding.coursecode.setError("Course code cannot be empty!");
@@ -294,8 +336,10 @@ public class Admin_add extends AppCompatActivity {
     }
     private List<String> fetchPrereq(){
         List<String> result = new ArrayList<String>();
-        for(int j = 0; j < courseList.size(); j++){
-            result.add(courseArray[courseList.get(j)]);
+        for(KeyPairBoolData i:courseList){
+            if(i.isSelected()){
+                result.add(i.getName());
+            }
         }
         return result;
     }

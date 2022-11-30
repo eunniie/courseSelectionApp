@@ -1,15 +1,19 @@
 package com.example.b07_course_selection_project.Course;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 public class Course {
     public String name;
     public String code;
-    public List<String> preReq = new ArrayList<>();
+    public List<String> preReq;
     public List<String> timeOffered;
     public List<String> uid;
+    public List<String> dependent;
 
     //need empty constructor b/c reading from firebase crashes without it
     public Course(){
@@ -21,6 +25,7 @@ public class Course {
         this.preReq = new ArrayList<String>();
         this.timeOffered = new ArrayList<String>();
         this.uid = new ArrayList<String>();
+        this.dependent = new ArrayList<String>();
     }
 
     public Course(String name, String code, List<String> timeOffered){
@@ -29,6 +34,7 @@ public class Course {
         this.preReq = new ArrayList<String>();
         this.timeOffered = timeOffered;
         this.uid = new ArrayList<String>();
+        this.dependent = new ArrayList<String>();
     }
 
     public Course(String name, String code, List<String> preReq, List<String> timeOffered) {
@@ -37,6 +43,25 @@ public class Course {
         this.preReq = preReq;
         this.timeOffered = timeOffered;
         this.uid = new ArrayList<String>();
+        this.dependent = new ArrayList<String>();
+    }
+
+    public Course(String name, String code, List<String> preReq, List<String> timeOffered, List<String> uid) {
+        this.name = name;
+        this.code = code;
+        this.preReq = preReq;
+        this.timeOffered = timeOffered;
+        this.uid = uid;
+        this.dependent = new ArrayList<String>();
+    }
+
+    public Course(String name, String code, List<String> preReq, List<String> timeOffered, List<String> uid, List<String> dependent) {
+        this.name = name;
+        this.code = code;
+        this.preReq = preReq;
+        this.timeOffered = timeOffered;
+        this.uid = uid;
+        this.dependent = dependent;
     }
 
     public String getName() {
@@ -53,6 +78,26 @@ public class Course {
 
     public List<String> getTimeOffered() { return this.timeOffered; }
 
+    public List<String> getUid() {
+        return this.uid;
+    }
+    public List<String> getDependent(){
+        return this.dependent;
+    }
+
+    public void setDependent(List<String> dependent){
+        this.dependent = dependent;
+    }
+    public void setPreReq(List<String> preReq){
+        this.preReq = preReq;
+    }
+    public void setTimeOffered(List<String> timeOffered){
+        this.timeOffered = timeOffered;
+    }
+    public void setUid(List<String> uid){
+        this.uid = uid;
+    }
+
     public boolean changeName (String input) {
         if (input != null)
         {
@@ -60,6 +105,17 @@ public class Course {
             return true;
         }
         return false;
+    }
+
+    public boolean dependentExist(String code){
+        return this.dependent.contains(code);
+    }
+
+    public void dependentAdd(String code){
+        if(!this.dependentExist(code)){
+            this.dependent.add(code);
+            Collections.sort(this.dependent);
+        }
     }
 
     public boolean changeCourseCode (String input) {

@@ -28,10 +28,12 @@
     <string name="restart">Restart</string>
     <string name="back">Back</string>
     <string name="registration">Registration</string>
-    <string name="i_am_an_administrator_not_a_student">I am an administrator, not a student.</string>
     <string name="firstname">Firstname</string>
     <string name="lastname">Lastname</string>
     <string name="admin_homepage">Admin Homepage</string>
     <string name="Admin_query">Look for a course here</string>
     <string name="admin_logout">logout</string>
+    <string name="type_to_search">Type to Search</string>
+    <string name="string_item_name">Item Name</string>
+    <string name="not_found">Not Found!</string>
 </resources>
