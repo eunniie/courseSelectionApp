@@ -175,4 +175,16 @@ public class Course {
         this.timeOffered = input;
         return true;
     }
+
+    public boolean userExists(String userid){
+        return uid.contains(userid);
+    }
+
+    public void addUser(String userid){
+        if(!userExists(userid))
+        {
+            this.uid.add(userid);
+        }
+
+    }
 }

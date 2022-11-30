@@ -52,18 +52,20 @@
         android:id="@+id/courseList"
         android:layout_width="378dp"
         android:layout_height="464dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="12dp"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText"
+        app:layout_constraintTop_toBottomOf="@+id/search_course"
         app:layout_constraintVertical_bias="0.106" />
 
     <SearchView
         android:id="@+id/search_course"
         android:layout_width="380dp"
         android:layout_height="53dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/courseList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

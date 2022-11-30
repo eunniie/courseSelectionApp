@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -38,7 +40,6 @@ import java.util.List;
 
 public class completedCourses extends AppCompatActivity {
     private ActivityCompletedCoursesBinding binding;
-    private FirebaseAuth mAuth;
     private List<String> completedCourses = new ArrayList<>();
     private List<Course> courses =new ArrayList<>();
     private List<String> code = new ArrayList<>();
@@ -49,9 +50,6 @@ public class completedCourses extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCompletedCoursesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        mAuth = FirebaseAuth.getInstance();
-        binding.searchCourse.setVisibility(View.GONE);
-
         //Set courses codes to ListView
         ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, completedCourses);
         arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,code);
@@ -89,6 +87,8 @@ public class completedCourses extends AppCompatActivity {
                 else{
                     binding.courseList.setAdapter(arrayAdapter1);
                     binding.searchCourse.setVisibility(View.GONE);
+                    binding.searchCourse.setQuery("", false);
+                    binding.titleText.setText("Completed Courses");
                 }
             }
         });
@@ -97,23 +97,26 @@ public class completedCourses extends AppCompatActivity {
         binding.addCourses.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                binding.titleText.setText("Adding Completed Courses");
                 binding.searchCourse.setVisibility(View.VISIBLE);
-
 
                 FirebaseDatabase.getInstance().getReference().child("Courses").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        code = new ArrayList<>();
+                        courses = new ArrayList<>();
+                        arrayAdapter2 = new ArrayAdapter<String>(completedCourses.this, android.R.layout.simple_list_item_1,code);
                         for (DataSnapshot snap : snapshot.getChildren()) {
                             courses.add(snap.getValue(Course.class));
                             code.add(snap.getValue(Course.class).getCode());
                             arrayAdapter2.notifyDataSetChanged();
                         }
+                        binding.courseList.setAdapter(arrayAdapter2);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-                binding.courseList.setAdapter(arrayAdapter2);
                 binding.courseList.setOnScrollListener(new AbsListView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -136,6 +139,21 @@ public class completedCourses extends AppCompatActivity {
                                 FirebaseDatabase.getInstance().getReference().child("Users")
                                         .child("Students").child(FirebaseAuth.getInstance()
                                                 .getCurrentUser().getUid()).child("completedCoursesCode").setValue(completedCourses);
+                                //declaring observer below
+                                FirebaseDatabase.getInstance().getReference("Courses").child(added).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        Course temp = snapshot.getValue(Course.class);
+                                        temp.addUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        FirebaseDatabase.getInstance().getReference("Courses").child(added).setValue(temp);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        return;
+                                    }
+
+                                });
                             }else{
                                 Toast.makeText(completedCourses.this, "Adding failed!", Toast.LENGTH_SHORT).show();
                             }
@@ -176,6 +194,7 @@ public class completedCourses extends AppCompatActivity {
                         }
                     }
                 });
+                binding.searchCourse.clearFocus();
             }
         });
     }

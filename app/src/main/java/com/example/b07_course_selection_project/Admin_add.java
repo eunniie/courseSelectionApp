@@ -241,7 +241,6 @@ public class Admin_add extends AppCompatActivity {
             FirebaseDatabase.getInstance().getReference("Courses").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
                     Course temp = snapshot.getValue(Course.class);
                     temp.dependentAdd(coursecode);
                     FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
