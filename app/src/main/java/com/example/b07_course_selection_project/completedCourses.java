@@ -89,6 +89,7 @@ public class completedCourses extends AppCompatActivity {
                     binding.searchCourse.setVisibility(View.GONE);
                     binding.searchCourse.setQuery("", false);
                     binding.titleText.setText("Completed Courses");
+                    binding.addCourses.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -99,7 +100,7 @@ public class completedCourses extends AppCompatActivity {
             public void onClick(View v){
                 binding.titleText.setText("Adding Completed Courses");
                 binding.searchCourse.setVisibility(View.VISIBLE);
-
+                binding.addCourses.setVisibility((View.GONE));
                 FirebaseDatabase.getInstance().getReference().child("Courses").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -130,33 +131,46 @@ public class completedCourses extends AppCompatActivity {
                 binding.courseList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        boolean f = true;
                         if (binding.searchCourse.getVisibility() == View.VISIBLE) {
                             String added = adapterView.getItemAtPosition(i).toString().trim();
                             if (!completedCourses.contains(added)) {
-                                completedCourses.add(added);
-                                Collections.sort(completedCourses);
-                                Toast.makeText(completedCourses.this, "Adding succeed!", Toast.LENGTH_SHORT).show();
-                                FirebaseDatabase.getInstance().getReference().child("Users")
-                                        .child("Students").child(FirebaseAuth.getInstance()
-                                                .getCurrentUser().getUid()).child("completedCoursesCode").setValue(completedCourses);
-                                //declaring observer below
-                                FirebaseDatabase.getInstance().getReference("Courses").child(added).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        Course temp = snapshot.getValue(Course.class);
-                                        temp.addUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        FirebaseDatabase.getInstance().getReference("Courses").child(added).setValue(temp);
+                                for (String item : courses.get(code.indexOf(added)).preReq) {
+                                    if (!completedCourses.contains(item)) {
+                                        f = false;
+                                        break;
                                     }
+                                }
+                                if (f) {
+                                    completedCourses.add(added);
+                                    Collections.sort(completedCourses);
+                                    Toast.makeText(completedCourses.this, "Adding succeed!", Toast.LENGTH_SHORT).show();
+                                    FirebaseDatabase.getInstance().getReference().child("Users")
+                                            .child("Students").child(FirebaseAuth.getInstance()
+                                                    .getCurrentUser().getUid()).child("completedCoursesCode").setValue(completedCourses);
+                                    //declaring observer below
+                                    FirebaseDatabase.getInstance().getReference("Courses").child(added).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            Course temp = snapshot.getValue(Course.class);
+                                            temp.addUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                            FirebaseDatabase.getInstance().getReference("Courses").child(added).setValue(temp);
+                                        }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        return;
-                                    }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                        }
 
-                                });
-                            }else{
-                                Toast.makeText(completedCourses.this, "Adding failed!", Toast.LENGTH_SHORT).show();
+                                    });
+                                }
+                                else{
+                                    Toast.makeText(completedCourses.this, "Take Prerequisite!", Toast.LENGTH_SHORT).show();
+                                }
                             }
+                            else{
+                                Toast.makeText(completedCourses.this, "Adding failed!", Toast.LENGTH_SHORT).show();
+                                }
+
                         }
                     }
                 });
