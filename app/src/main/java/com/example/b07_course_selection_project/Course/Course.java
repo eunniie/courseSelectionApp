@@ -3,6 +3,7 @@ package com.example.b07_course_selection_project.Course;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -187,4 +188,30 @@ public class Course {
         }
 
     }
+    public String getPrereqString(){
+       String result = "";
+       for(String i: this.preReq){
+           result += i + ", ";
+       }
+       if(result.isEmpty())
+           return "N/A";
+       return result.substring(0, result.length() - 2);
+    }
+    public String getSessionString(){
+        String result = "";
+        for(String i: this.timeOffered){
+            if(i.equals("Summer")){
+                result += "S";
+            }
+            else if(i.equals("Winter")){
+                result += "W";
+            }
+            else{
+                result += "F";
+            }
+            result += ", ";
+        }
+        return result.substring(0, result.length() - 2);
+    }
+
 }

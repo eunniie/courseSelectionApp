@@ -4,7 +4,6 @@
 
     <application
         android:allowBackup="true"
-
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -14,8 +13,17 @@
         android:theme="@style/Theme.B07courseselectionproject"
         tools:targetApi="31">
         <activity
-            android:name=".Admin_Panel"
+            android:name=".Admin_change_info"
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Admin_Panel"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing">
+            >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
