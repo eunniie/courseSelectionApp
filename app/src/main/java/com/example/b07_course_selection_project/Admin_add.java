@@ -243,22 +243,6 @@ public class Admin_add extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
                     Course temp = snapshot.getValue(Course.class);
-                    if(snapshot.child("dependent").getValue(t) != null)
-                        temp.dependent = snapshot.child("dependent").getValue(t);
-                    else
-                        temp.setDependent(new ArrayList<String>());
-                    if(snapshot.child("preReq").getValue(t) != null)
-                        temp.preReq = snapshot.child("preReq").getValue(t);
-                    else
-                        temp.setPreReq(new ArrayList<String>());
-                    if(snapshot.child("timeOffered").getValue(t) != null)
-                        temp.timeOffered = snapshot.child("timeOffered").getValue(t);
-                    else
-                        temp.setTimeOffered(new ArrayList<String>());
-                    if(snapshot.child("uid").getValue(t) != null)
-                        temp.uid = snapshot.child("uid").getValue(t);
-                    else
-                        temp.setUid(new ArrayList<String>());
                     temp.dependentAdd(coursecode);
                     FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
                 }

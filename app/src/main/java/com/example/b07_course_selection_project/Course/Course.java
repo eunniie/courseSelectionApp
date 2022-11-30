@@ -17,6 +17,12 @@ public class Course {
 
     //need empty constructor b/c reading from firebase crashes without it
     public Course(){
+        this.name = "";
+        this.code = "";
+        this.preReq = new ArrayList<String>();
+        this.timeOffered = new ArrayList<String>();
+        this.uid = new ArrayList<String>();
+        this.dependent = new ArrayList<String>();
     }
 
     public Course(String name, String code){
