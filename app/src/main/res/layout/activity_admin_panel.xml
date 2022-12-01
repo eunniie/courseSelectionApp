@@ -11,23 +11,26 @@
 
     <Button
         android:id="@+id/add_courses_admin"
-        android:layout_width="124dp"
+        android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:backgroundTint="@color/grass_green"
         android:text="@string/add_courses"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintHorizontal_bias="0.94"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.968" />
+        app:layout_constraintVertical_bias="0.976" />
 
     <SearchView
         android:id="@+id/search_course"
         android:layout_width="380dp"
         android:layout_height="46dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="4dp"
+        android:background="#95DBE5FF"
+        android:backgroundTint="@color/light_teal"
         android:queryHint="@string/Admin_query"
         app:layout_constraintBottom_toTopOf="@+id/prereq"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,15 +40,16 @@
 
     <TextView
         android:id="@+id/code"
-        android:paddingStart="8dp"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:paddingStart="8dp"
         android:text="Code:"
         android:textSize="20dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="44px"
         app:layout_constraintBottom_toTopOf="@id/course_list"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent" />
+
     <TextView
         android:id="@+id/prereq"
         android:layout_width="160dp"
@@ -57,20 +61,24 @@
         app:layout_constraintTop_toBottomOf="@id/search_course"
         app:layout_constraintBottom_toTopOf="@id/course_list"
         app:layout_constraintLeft_toRightOf="@id/code"/>
+
     <TextView
-        android:layout_width="107dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:text="Sessions:"
-        android:textSize="20dp"
         android:layout_marginBottom="8dp"
         android:gravity="right"
+        android:text="Sessions:"
+        android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@id/course_list"
-        app:layout_constraintLeft_toRightOf="@id/prereq"/>
+        app:layout_constraintLeft_toRightOf="@id/prereq" />
+
     <ListView
         android:id="@+id/course_list"
-        android:layout_width="378dp"
+        android:layout_width="380dp"
         android:layout_height="464dp"
         android:layout_marginBottom="92dp"
+        android:background="#95DBE5FF"
+        android:backgroundTint="@color/light_teal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.484"
@@ -81,7 +89,8 @@
         android:id="@+id/admin_homepage_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="75dp"
+        android:fontFamily="monospace"
         android:text="@string/welcome_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,20 +100,19 @@
         android:id="@+id/admin_homepage_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="cursive"
         android:text="@string/admin_homepage"
         android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/admin_logout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:backgroundTint="@color/grass_green"
         android:text="@string/admin_logout"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -112,6 +120,6 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957" />
+        app:layout_constraintVertical_bias="0.973" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

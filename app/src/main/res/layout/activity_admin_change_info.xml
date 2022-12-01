@@ -4,160 +4,176 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#95DBE5FF"
+    android:backgroundTint="@color/light_teal"
     tools:context=".Admin_change_info">
 
     <Button
         android:id="@+id/change_course"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/grass_green"
         android:text="Change Course"
-        android:layout_marginLeft="20px"
-        android:layout_marginRight="20px"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/delete"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="#E64A4A"
         android:text="Delete Course"
-        android:layout_marginLeft="20px"
-        android:layout_marginRight="20px"
-        app:layout_constraintBottom_toTopOf="@id/cancel"/>
+        app:layout_constraintBottom_toTopOf="@id/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/clear"
-        android:layout_width="196dp"
-        android:layout_height="wrap_content"
+        android:layout_width="147dp"
+        android:layout_height="55dp"
+        android:layout_marginRight="20px"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/grass_green"
         android:text="Refresh/Clear"
-        android:layout_marginRight="20px"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/change_course"
         app:layout_constraintLeft_toRightOf="@id/cancel"
-        app:layout_constraintBottom_toTopOf="@id/change_course"/>
+        app:layout_constraintRight_toRightOf="parent" />
+
     <Button
         android:id="@+id/cancel"
-        android:layout_width="196dp"
-        android:layout_height="wrap_content"
+        android:layout_width="144dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="10px"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/grass_green"
         android:text="Cancel/Back"
-        android:layout_marginRight="10px"
-        android:layout_marginLeft="20px"
-        app:layout_constraintRight_toLeftOf="@id/clear"
+        app:layout_constraintBottom_toTopOf="@id/change_course"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/change_course"/>
+        app:layout_constraintRight_toLeftOf="@id/clear" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:text="Modifying Course"
-        android:textSize="100px"
-        android:fontFamily="sans-serif-black"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black"
+        android:textSize="40dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/currentModify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="monospace"
         android:text="Modifying Course"
-        android:textSize="30px"
-        android:fontFamily="sans-serif-black"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        android:textSize="15dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
     <EditText
         android:id="@+id/coursecode"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginTop="21dp"
-        android:textAllCaps="true"
-        android:layout_marginBottom="21dp"
-        android:inputType="textCapCharacters"
-        android:textSize="20sp"
         android:layout_marginLeft="20px"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
+        android:layout_marginTop="32dp"
+        android:ems="10"
         android:hint="Course Code"
-        android:maxLength="3"/>
+        android:inputType="textCapCharacters"
+        android:maxLength="3"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
     <EditText
         android:id="@+id/courselevel"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="21dp"
+        android:hint="Level"
         android:inputType="textCapCharacters"
+        android:maxLength="1"
         android:textAllCaps="true"
         android:textSize="20sp"
-        android:layout_marginLeft="20px"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintLeft_toRightOf="@id/coursecode"
         app:layout_constraintRight_toLeftOf="@id/coursenum"
-        app:layout_constraintHorizontal_bias="0.076"
-        android:hint="Level"
-        android:maxLength="1"/>
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
     <EditText
         android:id="@+id/coursenum"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="21dp"
-        android:inputType="number"
-        android:textSize="20sp"
         android:layout_marginLeft="20px"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintLeft_toRightOf="@id/courselevel"
-        app:layout_constraintHorizontal_bias="0.076"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        android:ems="10"
         android:hint="Course Number"
-        android:maxLength="2"/>
+        android:inputType="number"
+        android:maxLength="2"
+        android:textSize="20sp"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintLeft_toRightOf="@id/courselevel"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
     <EditText
         android:id="@+id/coursename"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="370dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="8dp"
         android:ems="10"
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="21dp"
+        android:hint="Course Name"
         android:inputType="text"
         android:textSize="20sp"
-        android:layout_marginLeft="20px"
-        android:layout_marginRight="20px"
-        app:layout_constraintTop_toBottomOf="@id/courselevel"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:hint="Course Name" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/courselevel" />
+
     <TextView
         android:id="@+id/sessionselector"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginLeft="32px"
-        android:layout_marginRight="32px"
-        app:layout_constraintTop_toBottomOf="@id/coursename"
-        android:layout_marginTop="21dp"
-        android:padding="12dp"
-        android:hint="Select Available Sessions"
-        android:drawablePadding="16dp"
+        android:layout_width="370dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="12dp"
+        android:background="#95DBE5FF"
+        android:backgroundTint="@color/light_teal"
         android:drawableEnd="@android:drawable/arrow_down_float"
-        android:background="@android:drawable/editbox_background"
-        android:textSize="20sp"
+        android:drawablePadding="16dp"
+        android:ems="10"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        />
+        android:hint="Select Available Sessions"
+        android:padding="12dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coursename" />
 
     <com.example.b07_course_selection_project.MultiSelect.MultiSpinnerSearch
         android:id="@+id/spinner"
-        android:layout_width="match_parent"
+        android:layout_width="370dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:background="@android:drawable/editbox_background"
+        android:layout_marginTop="8dp"
+        android:background="#95DBE5FF"
+        android:backgroundTint="@color/light_teal"
         android:drawableEnd="@android:drawable/arrow_down_float"
         android:textSize="20sp"
         app:hintText="Select Prerequisites (OPTIONAL)"
-        app:layout_constraintTop_toBottomOf="@id/sessionselector"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sessionselector" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

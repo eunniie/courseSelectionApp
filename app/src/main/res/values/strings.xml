@@ -36,4 +36,5 @@
     <string name="type_to_search">Type to Search</string>
     <string name="string_item_name">Item Name</string>
     <string name="not_found">Not Found!</string>
+    <string name="admin_add_title">Adding Course</string>
 </resources>

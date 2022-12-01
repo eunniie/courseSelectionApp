@@ -124,6 +124,7 @@
         android:id="@+id/register_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/grass_green"
         android:text="@string/register_home"
         app:layout_constraintBottom_toBottomOf="parent"
