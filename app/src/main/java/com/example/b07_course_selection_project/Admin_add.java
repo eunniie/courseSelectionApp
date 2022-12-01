@@ -72,6 +72,10 @@ public class Admin_add extends AppCompatActivity {
                 clearAll();
             }
         });
+        binding.cancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {finish();}
+        });
 
     }
     private void initSele(){

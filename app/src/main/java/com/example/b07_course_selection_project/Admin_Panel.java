@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,11 @@ public class Admin_Panel extends AppCompatActivity {
         });
         binding.searchCourse.clearFocus();
     }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        fetchCourses();
+    }
 
     private void fetchCourses(){
         FirebaseDatabase.getInstance().getReference("Courses").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -59,17 +65,19 @@ public class Admin_Panel extends AppCompatActivity {
                 for(DataSnapshot i: snapshot.getChildren()){
                     courses.add(i.getValue(Course.class));
                 }
-                adapter = new CourseAdapter(Admin_Panel.this, courses);
-                binding.courseList.setAdapter(adapter);
-//                binding.courseList.setOnClickListener(new AdapterView.OnItemClickListener(){
-//                    @Override
-//                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                        adapterView.getItemAtPosition(i);
-//                        Intent intent = new Intent(Admin_Panel.this, );
-//                        startActivity(intent);
-//                    }
-//                });
-                initSearch();
+                if(!courses.isEmpty()) {
+                    adapter = new CourseAdapter(Admin_Panel.this, courses);
+                    binding.courseList.setAdapter(adapter);
+                    binding.courseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Intent intent = new Intent(Admin_Panel.this, Admin_change_info.class);
+                            intent.putExtra("passed", (Serializable) adapterView.getItemAtPosition(i));
+                            startActivity(intent);
+                        }
+                    });
+                    initSearch();
+                }
             }
 
             @Override

@@ -127,7 +127,7 @@ public class Timeline extends AppCompatActivity {
                             .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    startActivity(new Intent(Timeline.this, Student_Panel.class));
+                                    finish();
                                 }
                             }).show();
                     return;

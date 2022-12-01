@@ -9,9 +9,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.b07_course_selection_project.Course.Course;
 
 import java.util.ArrayList;
@@ -104,8 +101,8 @@ public class CourseAdapter extends BaseAdapter implements Filterable {
             holder = (ViewHolder) view.getTag();
         }
         holder.code.setText(filteredData.get(i).getCode());
-        holder.sessions.setText(filteredData.get(i).getSessionString());
-        holder.prereq.setText(filteredData.get(i).getPrereqString());
+        holder.sessions.setText(filteredData.get(i).getSessionStr());
+        holder.prereq.setText(filteredData.get(i).getPreReqStr());
         return view;
     }
 }

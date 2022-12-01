@@ -17,12 +17,24 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
         android:id="@+id/clear"
-        android:layout_width="match_parent"
+        android:layout_width="196dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grass_green"
         android:text="Refresh/Clear"
-        android:layout_marginLeft="20px"
         android:layout_marginRight="20px"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/cancel"
+        app:layout_constraintBottom_toTopOf="@id/add_courses"/>
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/grass_green"
+        android:text="Cancel/Back"
+        android:layout_marginRight="10px"
+        android:layout_marginLeft="20px"
+        app:layout_constraintRight_toLeftOf="@id/clear"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/add_courses"/>
     <TextView
         android:id="@+id/title"

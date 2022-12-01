@@ -1,14 +1,14 @@
 package com.example.b07_course_selection_project.Course;
 
-import android.util.Log;
+import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 
-public class Course {
+public class Course implements Serializable {
     public String name;
     public String code;
     public List<String> preReq;
@@ -79,6 +79,9 @@ public class Course {
         return this.code;
     }
 
+    public void sortCollection(List<String> coll){
+        Collections.sort(coll);
+    }
     public List<String> getPreReq() {
         return preReq;
     }
@@ -136,11 +139,9 @@ public class Course {
 
     //checks if input exists before deleting
     public boolean deleteOnePreReq (String input) {
-        int index = this.preReq.indexOf(input);
-
-        if (index != -1 && this.preReq.size() != 0)
+        if (this.preReq.contains(input) && this.preReq.size() != 0)
         {
-            this.preReq.remove(index);
+            this.preReq.remove(input);
             return true;
         }
         return false;
@@ -150,12 +151,10 @@ public class Course {
         if (this.preReq.contains(input)) {
             return false;
         }
-        else
-        {
-            this.preReq.add(input);
-            return true;
-        }
+        this.preReq.add(input);
+        return true;
     }
+
 
     public boolean addTimeOffered(String input){
         this.timeOffered.add(input);
@@ -188,7 +187,8 @@ public class Course {
         }
 
     }
-    public String getPrereqString(){
+    @Exclude
+    public String getPreReqStr(){
        String result = "";
        for(String i: this.preReq){
            result += i + ", ";
@@ -197,7 +197,8 @@ public class Course {
            return "N/A";
        return result.substring(0, result.length() - 2);
     }
-    public String getSessionString(){
+    @Exclude
+    public String getSessionStr(){
         String result = "";
         for(String i: this.timeOffered){
             if(i.equals("Summer")){
