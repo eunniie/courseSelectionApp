@@ -36,7 +36,9 @@ public class Timeline extends AppCompatActivity {
     private ActivityTimelineBinding binding;
     private List<String> selected = new ArrayList<>();
     private List<String> completedCourses = new ArrayList<>();
+    private List<Integer> indices = new ArrayList<>();
     private List<String> willComplete = new ArrayList<>();
+    private List<Course> possible = new ArrayList<>();
 
 
     @Override
@@ -76,6 +78,7 @@ public class Timeline extends AppCompatActivity {
             public void onClick(View v) {
                 selected.clear();
                 completedCourses.clear();
+                indices.clear();
                 binding.gen.setVisibility(View.VISIBLE);
                 String text = "Select the course(s) you'd like to take:";
                 binding.titleSubtext.setText(text);
@@ -121,6 +124,7 @@ public class Timeline extends AppCompatActivity {
                     Course c = snap.getValue(Course.class);
                     if (!completedCourses.contains(c.getCode())){
                         courses.add(c.getCode());
+                        possible.add(c);
                     }
                 }
                 //If there are no courses, or user has completed all available courses
@@ -152,9 +156,7 @@ public class Timeline extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //If selected already,
                 if(selected.contains((String) adapterView.getItemAtPosition(i))){
-                    Toast.makeText(Timeline.this, "You've already selected this course", Toast.LENGTH_SHORT).show();
-                    binding.timeline.setItemChecked(i, true);
-
+                    revokeCourse((String) adapterView.getItemAtPosition(i), i);
                 }
                 //If not selected yet, check if prereq fufilled and add to selected based on that
                 else{
@@ -164,9 +166,9 @@ public class Timeline extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             List<String> pre = new ArrayList<>();
                             Course c = dataSnapshot.getValue(Course.class);
-                            for (String course: c.getPreReq()){
-                               if (!completedCourses.contains(course) && !willComplete.contains(course)) pre.add(course);
-                            }
+                            for (String course: c.getPreReq())
+                                if (!completedCourses.contains(course) && !willComplete.contains(course)) pre.add(course);
+
                             //If preReqs haven't been taken, Display error
                             if (!pre.isEmpty()){
                                 binding.timeline.setItemChecked(i, false);
@@ -185,6 +187,7 @@ public class Timeline extends AppCompatActivity {
                             //If preReqs have been taken, add to selected
                             }else{
                                 selected.add((String) adapterView.getItemAtPosition(i));
+                                indices.add(i);
                                 willComplete.add((String) adapterView.getItemAtPosition(i));
                             }
                         }
@@ -197,6 +200,17 @@ public class Timeline extends AppCompatActivity {
                 stop(courses, arrayAdapter);
             }
         });
+    }
+    private void revokeCourse(String name, int pos){
+        selected.remove(name);
+        indices.remove(Integer.valueOf(pos));
+        willComplete.remove(name);
+        binding.timeline.setItemChecked(pos, false);
+        for(Course i: possible){
+            if(!i.getCode().equals(name) && i.getPreReq().contains(name) && selected.contains(i.getCode())){
+                revokeCourse(i.getCode(), indices.get(Integer.valueOf(selected.indexOf(i.getCode()))));
+            }
+        }
     }
 
     private void stop(List<String> courses, ArrayAdapter<String> arrayAdapter){
