@@ -37,6 +37,9 @@ public class Timeline extends AppCompatActivity {
     private List<String> selected = new ArrayList<>();
     private List<String> completedCourses = new ArrayList<>();
     private List<String> willComplete = new ArrayList<>();
+    private List<String> timeline = new ArrayList<String>();
+    private List<Integer> indices = new ArrayList<>();
+    private List<Course> possible = new ArrayList<>();
 
 
     @Override
@@ -76,6 +79,9 @@ public class Timeline extends AppCompatActivity {
             public void onClick(View v) {
                 selected.clear();
                 completedCourses.clear();
+                timeline.clear();
+                indices.clear();
+                willComplete.clear();
                 binding.gen.setVisibility(View.VISIBLE);
                 String text = "Select the course(s) you'd like to take:";
                 binding.titleSubtext.setText(text);
@@ -111,7 +117,7 @@ public class Timeline extends AppCompatActivity {
                 ArrayAdapter<String>(Timeline.this, android.R.layout.simple_list_item_multiple_choice,
                 courses);
 
-       DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Courses");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Courses");
 
         //displays list of courses they can take (Excluding courses already taken)
         ref.addValueEventListener(new ValueEventListener() {
@@ -121,6 +127,7 @@ public class Timeline extends AppCompatActivity {
                     Course c = snap.getValue(Course.class);
                     if (!completedCourses.contains(c.getCode())){
                         courses.add(c.getCode());
+                        possible.add(c);
                     }
                 }
                 //If there are no courses, or user has completed all available courses
@@ -152,9 +159,7 @@ public class Timeline extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //If selected already,
                 if(selected.contains((String) adapterView.getItemAtPosition(i))){
-                    Toast.makeText(Timeline.this, "You've already selected this course", Toast.LENGTH_SHORT).show();
-                    binding.timeline.setItemChecked(i, true);
-
+                    revokeCourse((String) adapterView.getItemAtPosition(i), i);
                 }
                 //If not selected yet, check if prereq fufilled and add to selected based on that
                 else{
@@ -164,8 +169,9 @@ public class Timeline extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             List<String> pre = new ArrayList<>();
                             Course c = dataSnapshot.getValue(Course.class);
-                            for (String course: c.getPreReq()){
-                               if (!completedCourses.contains(course) && !willComplete.contains(course)) pre.add(course);
+                            if(c != null)
+                                for (String course: c.getPreReq()){
+                                    if (!completedCourses.contains(course) && !willComplete.contains(course)) pre.add(course);
                             }
                             //If preReqs haven't been taken, Display error
                             if (!pre.isEmpty()){
@@ -182,10 +188,11 @@ public class Timeline extends AppCompatActivity {
                                     }
                                 });
                                 dialog.show();
-                            //If preReqs have been taken, add to selected
+                                //If preReqs have been taken, add to selected
                             }else{
                                 selected.add((String) adapterView.getItemAtPosition(i));
                                 willComplete.add((String) adapterView.getItemAtPosition(i));
+                                indices.add(i);
                             }
                         }
                         @Override
@@ -197,6 +204,18 @@ public class Timeline extends AppCompatActivity {
                 stop(courses, arrayAdapter);
             }
         });
+    }
+
+    private void revokeCourse(String name, int pos){
+        selected.remove(name);
+        indices.remove(Integer.valueOf(pos));
+        willComplete.remove(name);
+        binding.timeline.setItemChecked(pos, false);
+        for(Course i: possible){
+            if(!i.getCode().equals(name) && i.getPreReq().contains(name) && selected.contains(i.getCode())){
+                revokeCourse(i.getCode(), indices.get(Integer.valueOf(selected.indexOf(i.getCode()))));
+            }
+        }
     }
 
     private void stop(List<String> courses, ArrayAdapter<String> arrayAdapter){
@@ -234,10 +253,9 @@ public class Timeline extends AppCompatActivity {
     }
 
     //selected courses is ordered from no prereq to most prereq
-    private void genTimeline(){
-        List<String> timeline= new ArrayList<String>();
-        for (String course: selected){
 
+    private void genTimeline(){
+        for (String course: selected){
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Courses").child(course);
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -249,60 +267,60 @@ public class Timeline extends AppCompatActivity {
                     //if all prereqs are completed already
                     if (c.getPreReq().isEmpty()||completedCourses.containsAll(c.getPreReq())){
                         if (c.getTimeOffered().contains("Fall")){
-                            timeline.add("Fall " + year + " " + c.getCode());
+                            combineTimeline("Fall", year, c.getCode());
                         }else if (c.getTimeOffered().contains("Winter")){
                             year+=1;
-                            timeline.add("Winter " + year + " " + c.getCode());
+                            combineTimeline("Winter", year, c.getCode());
                         }else{
                             year+=1;
-                            timeline.add("Summer " + year + " " + c.getCode());
+                            combineTimeline("Summer", year, c.getCode());
                         }
 
-                    //if prereqs are in timeline
+                        //if prereqs are in timeline
                     }else{
+                        //Gets the year and semester of the most recent prereq that is taken
                         for (String pre: c.getPreReq()){
                             if (willComplete.contains(pre)){
                                 for (String time: timeline){
                                     if (time.contains(pre)){
                                         String info [] = time.split(" ");
-                                        if (Integer.parseInt(info[1])>year || sem == ""){
+                                        if (Integer.parseInt(info[1].substring(0,4))>year || sem == ""){
                                             sem = info[0];
                                         }else{
                                             if (sem.compareTo(info[0])<0) sem = info[0];
                                         }
-                                        if (year<Integer.parseInt(info[1])) year = Integer.parseInt(info[1]);
+                                        if (year<Integer.parseInt(info[1].substring(0,4))) year = Integer.parseInt(info[1].substring(0,4));
                                     }
                                 }
                             }
                         }
-                       if (sem.compareTo("Summer")==0){
-                           if(c.getTimeOffered().contains("Fall")){
-                               timeline.add("Fall "+ year +" "+c.getCode());
-                           }else if (c.getTimeOffered().contains("Winter")){
-                               timeline.add("Winter "+ year +" "+c.getCode());
-                           }else{
-                               timeline.add("Summer "+ year +" "+c.getCode());
-                           }
-                       }else if (sem.compareTo("Winter") ==0 ){
-                            if(c.getTimeOffered().contains("Summer")){
-                                timeline.add("Summer "+ year +" "+c.getCode());
-                            }else if (c.getTimeOffered().contains("Fall")){
-                                year++;
-                                timeline.add("Fall "+ year +" "+c.getCode());
+
+                        //Adds course to timeline based on when recent prereq is taken
+                        if (sem.compareTo("Summer")==0){
+                            if(c.getTimeOffered().contains("Fall")){
+                                combineTimeline("Fall", year, c.getCode());
+                            }else if (c.getTimeOffered().contains("Winter")){
+                                combineTimeline("Winter", year+1, c.getCode());
                             }else{
-                                year++;
-                                timeline.add("Winter "+ year +" "+c.getCode());
+                                combineTimeline("Summer", year+1, c.getCode());
                             }
-                       }else {
-                           year++;
-                           if(c.getTimeOffered().contains("Winter")){
-                               timeline.add("Winter "+ year +" "+c.getCode());
-                           }else if (c.getTimeOffered().contains("Summer")){
-                               timeline.add("Summer "+ year +" "+c.getCode());
-                           }else{
-                               timeline.add("Fall "+ year +" "+c.getCode());
-                           }
-                       }
+                        }else if (sem.compareTo("Winter") ==0 ){
+                            if(c.getTimeOffered().contains("Summer")){
+                                combineTimeline("Summer", year, c.getCode());
+                            }else if (c.getTimeOffered().contains("Fall")){
+                                combineTimeline("Fall", year, c.getCode());
+                            }else{
+                                combineTimeline("Winter", year+1, c.getCode());
+                            }
+                        }else {
+                            if(c.getTimeOffered().contains("Winter")){
+                                combineTimeline("Winter", year+1, c.getCode());
+                            }else if (c.getTimeOffered().contains("Summer")){
+                                combineTimeline("Summer", year+1, c.getCode());
+                            }else{
+                                combineTimeline("Fall", year+1, c.getCode());
+                            }
+                        }
                     }
                     showTimeline(timeline);
                 }
@@ -311,6 +329,18 @@ public class Timeline extends AppCompatActivity {
                 }
             });
         }
-
     }
+
+    private void combineTimeline(String sem, int year, String course){
+        for (String semester: timeline){
+            String[] info = semester.split(" ");
+            if (info[0].equals(sem) && info[1].equals(year+":") ){
+                timeline.set(timeline.indexOf(semester), semester + " " + course);
+                return;
+            }
+        }
+        timeline.add(sem +" " +year +": " +course);
+    }
+
+    //TODO: Sort timeline by Semester and year
 }
