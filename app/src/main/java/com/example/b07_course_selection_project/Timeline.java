@@ -36,6 +36,7 @@ public class Timeline extends AppCompatActivity {
     private ActivityTimelineBinding binding;
     private List<String> selected = new ArrayList<>();
     private List<String> completedCourses = new ArrayList<>();
+    private List<String> willComplete = new ArrayList<>();
 
 
     @Override
@@ -111,6 +112,7 @@ public class Timeline extends AppCompatActivity {
                 courses);
 
        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Courses");
+
         //displays list of courses they can take (Excluding courses already taken)
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,6 +123,7 @@ public class Timeline extends AppCompatActivity {
                         courses.add(c.getCode());
                     }
                 }
+                //If there are no courses, or user has completed all available courses
                 if (courses.isEmpty()){
                     new AlertDialog.Builder(Timeline.this).setMessage
                                     ("There are no courses that you have not already taken, please contact an Admin.")
@@ -139,56 +142,59 @@ public class Timeline extends AppCompatActivity {
 
             }
         });
-        //Gets the courses that student wants to take
+
+
         binding.timeline.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         binding.timeline.setAdapter(arrayAdapter);
+        //Gets the courses that student wants to take
         binding.timeline.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //If already selected, delete from list of selected
+                //If selected already,
                 if(selected.contains((String) adapterView.getItemAtPosition(i))){
-                    selected.remove((String) adapterView.getItemAtPosition(i));
-                    stop(courses, arrayAdapter);
+                    Toast.makeText(Timeline.this, "You've already selected this course", Toast.LENGTH_SHORT).show();
+                    binding.timeline.setItemChecked(i, true);
 
                 }
-                //If not selected yet, add to list of selected
+                //If not selected yet, check if prereq fufilled and add to selected based on that
                 else{
-                    selected.add((String) adapterView.getItemAtPosition(i));
-                    stop(courses, arrayAdapter);
-                }
-
-                //Get preReq of selected course
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Courses").child((String) adapterView.getItemAtPosition(i));
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<String> pre = new ArrayList<>();
-                        Course c = dataSnapshot.getValue(Course.class);
-                        pre.addAll(c.getPreReq());
-
-                        //If preReqs haven't been taken, Display error, remove from selected
-                        if (!completedCourses.containsAll(pre)){
-                            binding.timeline.setItemChecked(i, false);
-                            selected.remove((String) adapterView.getItemAtPosition(i));
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(Timeline.this);
-                            dialog.setMessage("You have not completed all of the prerequisites of this course. " +
-                                    "The prerequisites of this course are:  " + pre.toString() +".");
-                            dialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            });
-                            dialog.show();
-                        }else{
-                            Toast.makeText(Timeline.this, "Added " + c.getCode(), Toast.LENGTH_SHORT);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Courses").child((String) adapterView.getItemAtPosition(i));
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            List<String> pre = new ArrayList<>();
+                            Course c = dataSnapshot.getValue(Course.class);
+                            for (String course: c.getPreReq()){
+                               if (!completedCourses.contains(course) && !willComplete.contains(course)) pre.add(course);
+                            }
+                            //If preReqs haven't been taken, Display error
+                            if (!pre.isEmpty()){
+                                binding.timeline.setItemChecked(i, false);
+                                completedCourses.remove((String) adapterView.getItemAtPosition(i));
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(Timeline.this);
+                                dialog.setMessage("You have not completed all of the prerequisites of this course. " +
+                                        "Please select your missing prerequisites. " +
+                                        "The prerequisites of this course are:  " + pre.toString() +".");
+                                dialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                });
+                                dialog.show();
+                            //If preReqs have been taken, add to selected
+                            }else{
+                                selected.add((String) adapterView.getItemAtPosition(i));
+                                willComplete.add((String) adapterView.getItemAtPosition(i));
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
 
+                }
+                stop(courses, arrayAdapter);
             }
         });
     }
@@ -223,29 +229,82 @@ public class Timeline extends AppCompatActivity {
                 ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, timeline);
         binding.timeline.setAdapter(adapter);
-        String text = "Here is your generate timeline";
+        String text = "Here is your generated timeline";
         binding.titleSubtext.setText(text);
     }
 
+    //selected courses is ordered from no prereq to most prereq
     private void genTimeline(){
-        List<String> listItems= new ArrayList<String>();
+        List<String> timeline= new ArrayList<String>();
         for (String course: selected){
+
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Courses").child(course);
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    int year = 2022;
+                    String sem = "";
 
                     Course c = dataSnapshot.getValue(Course.class);
+                    //if all prereqs are completed already
+                    if (c.getPreReq().isEmpty()||completedCourses.containsAll(c.getPreReq())){
+                        if (c.getTimeOffered().contains("Fall")){
+                            timeline.add("Fall " + year + " " + c.getCode());
+                        }else if (c.getTimeOffered().contains("Winter")){
+                            year+=1;
+                            timeline.add("Winter " + year + " " + c.getCode());
+                        }else{
+                            year+=1;
+                            timeline.add("Summer " + year + " " + c.getCode());
+                        }
 
-                    if (c.getTimeOffered().contains("Fall")){
-                        listItems.add("Fall 2022: " + c.getCode());
-                    }else if (c.getTimeOffered().contains("Winter")){
-                        listItems.add("Winter 2023: " + c.getCode());
+                    //if prereqs are in timeline
                     }else{
-                        listItems.add("Summer 2023: " + c.getCode());
+                        for (String pre: c.getPreReq()){
+                            if (willComplete.contains(pre)){
+                                for (String time: timeline){
+                                    if (time.contains(pre)){
+                                        String info [] = time.split(" ");
+                                        if (Integer.parseInt(info[1])>year || sem == ""){
+                                            sem = info[0];
+                                        }else{
+                                            if (sem.compareTo(info[0])<0) sem = info[0];
+                                        }
+                                        if (year<Integer.parseInt(info[1])) year = Integer.parseInt(info[1]);
+                                    }
+                                }
+                            }
+                        }
+                       if (sem.compareTo("Summer")==0){
+                           if(c.getTimeOffered().contains("Fall")){
+                               timeline.add("Fall "+ year +" "+c.getCode());
+                           }else if (c.getTimeOffered().contains("Winter")){
+                               timeline.add("Winter "+ year +" "+c.getCode());
+                           }else{
+                               timeline.add("Summer "+ year +" "+c.getCode());
+                           }
+                       }else if (sem.compareTo("Winter") ==0 ){
+                            if(c.getTimeOffered().contains("Summer")){
+                                timeline.add("Summer "+ year +" "+c.getCode());
+                            }else if (c.getTimeOffered().contains("Fall")){
+                                year++;
+                                timeline.add("Fall "+ year +" "+c.getCode());
+                            }else{
+                                year++;
+                                timeline.add("Winter "+ year +" "+c.getCode());
+                            }
+                       }else {
+                           year++;
+                           if(c.getTimeOffered().contains("Winter")){
+                               timeline.add("Winter "+ year +" "+c.getCode());
+                           }else if (c.getTimeOffered().contains("Summer")){
+                               timeline.add("Summer "+ year +" "+c.getCode());
+                           }else{
+                               timeline.add("Fall "+ year +" "+c.getCode());
+                           }
+                       }
                     }
-                    Collections.sort(listItems);
-                    showTimeline(listItems);
+                    showTimeline(timeline);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
