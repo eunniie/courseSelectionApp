@@ -69,7 +69,26 @@ public class Admin_change_info extends AppCompatActivity {
 
         binding.delete.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){ changeCourse(true);}
+            public void onClick(View view){
+                AlertDialog.Builder builder = new AlertDialog.Builder(Admin_change_info.this);
+                builder.setTitle("Confirmation");
+                builder.setMessage("Are you sure you want to delete this course?")
+                                .setCancelable(false)
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                changeCourse(true);
+                                            }
+                                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                builder.show();
+            }
+
         });
         clearAll();
         binding.sessionselector.setOnClickListener(new View.OnClickListener(){

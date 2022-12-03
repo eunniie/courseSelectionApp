@@ -190,12 +190,17 @@ public class Course implements Serializable {
     @Exclude
     public String getPreReqStr(){
        String result = "";
+       int count = 0;
        for(String i: this.preReq){
-           result += i + ", ";
+           if(count <= 1) result += i + ", ";
+           count++;
+       }
+       if(count > 1){
+           result = result.substring(0, result.length() - 2) + "...";
        }
        if(result.isEmpty())
            return "N/A";
-       return result.substring(0, result.length() - 2);
+       return result;
     }
     @Exclude
     public String getSessionStr(){

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -85,6 +87,23 @@ public class Register extends AppCompatActivity {
         if(!confPassword.equals(password)) {
             binding.confPassword.setError("Password does not match!");
             binding.confPassword.requestFocus();
+            binding.passwordRegister.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    binding.confPassword.setError(null);
+                    binding.confPassword.clearFocus();
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.confPassword.setError(null);
+                    binding.confPassword.clearFocus();
+                }
+            });
             return;
         }
 
