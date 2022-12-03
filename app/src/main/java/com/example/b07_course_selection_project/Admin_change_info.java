@@ -266,6 +266,10 @@ public class Admin_change_info extends AppCompatActivity {
             notifyDependers(deleting);
             notifyStudents(deleting);
             FirebaseDatabase.getInstance().getReference("Courses").child(prename).removeValue();
+            if(deleting) {
+                Toast.makeText(Admin_change_info.this, "Course deleted!", Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
         if (!deleting){
             FirebaseDatabase.getInstance().getReference("Courses").child(courseCode).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -283,11 +287,14 @@ public class Admin_change_info extends AppCompatActivity {
                                         } else {
                                             Toast.makeText(Admin_change_info.this, "Course failed to be changed!", Toast.LENGTH_LONG).show();
                                         }
+                                        finish();
                                     }
                                 });
                     } else {
-                        Toast.makeText(Admin_change_info.this, "Course already exists!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Admin_change_info.this, "Course code already exists!", Toast.LENGTH_LONG).show();
+                        finish();
                     }
+
                 }
 
                 @Override
@@ -296,7 +303,6 @@ public class Admin_change_info extends AppCompatActivity {
                 }
             });
         }
-        finish();
     }
 
     private void notifyDependers(boolean deleting){
@@ -307,12 +313,14 @@ public class Admin_change_info extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Course temp = snapshot.getValue(Course.class);
-                    temp.deleteOnePreReq(prename);
-                    if(!deleting) {
-                        temp.addOnePreReq(modifyObj.getCode());
-                        temp.sortCollection(temp.dependent);
+                    if(temp != null) {
+                        temp.deleteOnePreReq(prename);
+                        if (!deleting) {
+                            temp.addOnePreReq(modifyObj.getCode());
+                            temp.sortCollection(temp.dependent);
+                        }
+                        FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
                     }
-                    FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
                 }
 
                 @Override

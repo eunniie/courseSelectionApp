@@ -74,6 +74,7 @@ public class Admin_Panel extends AppCompatActivity {
                             Intent intent = new Intent(Admin_Panel.this, Admin_change_info.class);
                             intent.putExtra("passed", (Serializable) adapterView.getItemAtPosition(i));
                             startActivity(intent);
+                            fetchCourses();
                         }
                     });
                     initSearch();
