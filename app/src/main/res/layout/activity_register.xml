@@ -16,35 +16,37 @@
         android:id="@+id/LastnameInput"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/lastname"
         android:layout_marginTop="21dp"
         android:layout_marginBottom="21dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/lastname"
         android:inputType="text"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/RegisterTitle"
         app:layout_constraintBottom_toTopOf="@id/email_register"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
+        app:layout_constraintHorizontal_bias="0.932"
         app:layout_constraintLeft_toRightOf="@id/FirstnameInput"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@id/RegisterTitle"
+        app:layout_constraintVertical_bias="0.636" />
 
     <EditText
         android:id="@+id/FirstnameInput"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="21dp"
         android:layout_marginBottom="21dp"
+        android:autofillHints=""
+        android:ems="10"
         android:hint="@string/firstname"
         android:inputType="text"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/RegisterTitle"
         app:layout_constraintBottom_toTopOf="@id/email_register"
-        app:layout_constraintRight_toLeftOf="@id/LastnameInput"
-        app:layout_constraintHorizontal_bias="0.076"
-        android:autofillHints="" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RegisterTitle"
+        app:layout_constraintVertical_bias="0.636" />
 
     <TextView
         android:id="@+id/RegisterTitle"
