@@ -136,7 +136,8 @@ public class Admin_change_info extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data:snapshot.getChildren()){
-                    result.add(data.child("code").getValue().toString());
+                    if(!data.child("code").getValue().toString().equals(prename))
+                        result.add(data.child("code").getValue().toString());
                 }
                 Collections.sort(result);
                 populatePair(result);
