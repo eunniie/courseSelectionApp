@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +30,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Timeline extends AppCompatActivity {
@@ -244,6 +247,9 @@ public class Timeline extends AppCompatActivity {
         });
     }
     private void showTimeline(List<String> timeline){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            timeline.sort(new timelineComparator());
+        }
         ArrayAdapter<String> adapter = new
                 ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, timeline);
@@ -269,11 +275,9 @@ public class Timeline extends AppCompatActivity {
                         if (c.getTimeOffered().contains("Fall")){
                             combineTimeline("Fall", year, c.getCode());
                         }else if (c.getTimeOffered().contains("Winter")){
-                            year+=1;
-                            combineTimeline("Winter", year, c.getCode());
+                            combineTimeline("Winter", year+1, c.getCode());
                         }else{
-                            year+=1;
-                            combineTimeline("Summer", year, c.getCode());
+                            combineTimeline("Summer", year+1, c.getCode());
                         }
 
                         //if prereqs are in timeline
@@ -342,5 +346,25 @@ public class Timeline extends AppCompatActivity {
         timeline.add(sem +" " +year +": " +course);
     }
 
-    //TODO: Sort timeline by Semester and year
+    private static class timelineComparator implements Comparator<String> {
+
+        private enum Season {WINTER, SUMMER, FALL}
+
+        @Override
+        public int compare(String s1, String s2) {
+            String[] session1 = s1.split(" ");
+            String[] session2 = s2.split(" ");
+
+            int year1 = Integer.parseInt(session1[1].substring(0,4));
+            int year2 = Integer.parseInt(session2[1].substring(0,4));
+
+            if (year1 != year2) {
+                return year1 - year2;
+            } else {
+                Season season1 = Season.valueOf(session1[0].toUpperCase());
+                Season season2 = Season.valueOf(session2[0].toUpperCase());
+                return season1.ordinal() - season2.ordinal();
+            }
+        }
+    }
 }
