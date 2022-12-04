@@ -1,5 +1,7 @@
 package com.example.b07_course_selection_project.Course;
 
+import android.util.Log;
+
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
@@ -127,6 +129,10 @@ public class Course implements Serializable {
             Collections.sort(this.dependent);
         }
     }
+    public void dependentRemove(String code){
+        if(this.dependentExist(code))
+            this.dependent.remove(code);
+    }
 
     public boolean changeCourseCode (String input) {
         if (input != null)
@@ -195,8 +201,11 @@ public class Course implements Serializable {
            if(count <= 1) result += i + ", ";
            count++;
        }
-       if(count > 1){
+       if(count > 2){
            result = result.substring(0, result.length() - 2) + "...";
+       }
+       else if(count > 0){
+           result = result.substring(0, result.length() - 2);
        }
        if(result.isEmpty())
            return "N/A";

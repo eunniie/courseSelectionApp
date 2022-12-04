@@ -49,6 +49,7 @@ public class Admin_change_info extends AppCompatActivity {
 
     String prename;
     Course modifyObj;
+    List<String> pastPrereq;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +58,7 @@ public class Admin_change_info extends AppCompatActivity {
         Intent intent = getIntent();
         modifyObj = (Course) intent.getSerializableExtra("passed");
         prename = modifyObj.getCode();
+        pastPrereq = modifyObj.getPreReq();
         binding.currentModify.setText("Modifying: " + prename);
 
 
@@ -284,6 +286,7 @@ public class Admin_change_info extends AppCompatActivity {
         if (!coursename.equals(prename) || deleting) {
             notifyDependers(deleting);
             notifyStudents(deleting);
+            removeDependent(true);
             FirebaseDatabase.getInstance().getReference("Courses").child(prename).removeValue();
             if(deleting) {
                 Toast.makeText(Admin_change_info.this, "Course deleted!", Toast.LENGTH_LONG).show();
@@ -300,8 +303,10 @@ public class Admin_change_info extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            if (!courses.isEmpty())
+                                            removeDependent(false);
+                                            if (!courses.isEmpty()) {
                                                 notifyNewDepender(courseCode, courses);
+                                            }
                                             Toast.makeText(Admin_change_info.this, "Course changed!", Toast.LENGTH_LONG).show();
                                         } else {
                                             Toast.makeText(Admin_change_info.this, "Course failed to be changed!", Toast.LENGTH_LONG).show();
@@ -324,6 +329,26 @@ public class Admin_change_info extends AppCompatActivity {
         }
     }
 
+    private void removeDependent(boolean deleting) {
+        for (String i : pastPrereq) {
+            FirebaseDatabase.getInstance().getReference("Courses").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Course temp = snapshot.getValue(Course.class);
+                    if(!modifyObj.getPreReq().contains(temp.getCode()) || deleting) {
+                        temp.dependentRemove(prename);
+                    }
+                    FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    return;
+                }
+            });
+        }
+    }
+
     private void notifyDependers(boolean deleting){
         if(modifyObj.getDependent().isEmpty())
             return;
@@ -336,7 +361,7 @@ public class Admin_change_info extends AppCompatActivity {
                         temp.deleteOnePreReq(prename);
                         if (!deleting) {
                             temp.addOnePreReq(modifyObj.getCode());
-                            temp.sortCollection(temp.dependent);
+                            temp.sortCollection(temp.preReq);
                         }
                         FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
                     }
@@ -379,8 +404,13 @@ public class Admin_change_info extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Course temp = snapshot.getValue(Course.class);
-                    temp.dependentAdd(coursecode);
-                    FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
+                    if(temp != null) {
+                        if (!coursecode.equals(prename)) {
+                            temp.dependentRemove(prename);
+                        }
+                        temp.dependentAdd(coursecode);
+                        FirebaseDatabase.getInstance().getReference("Courses").child(i).setValue(temp);
+                    }
                 }
 
                 @Override
