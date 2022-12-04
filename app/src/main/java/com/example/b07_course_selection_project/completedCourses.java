@@ -168,7 +168,7 @@ public class completedCourses extends AppCompatActivity {
                                 }
                             }
                             else{
-                                Toast.makeText(completedCourses.this, "Adding failed!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(completedCourses.this, "Course already added!", Toast.LENGTH_SHORT).show();
                                 }
 
                         }
@@ -194,7 +194,7 @@ public class completedCourses extends AppCompatActivity {
                     public boolean onQueryTextSubmit(String query) {
                         Log.d(TAG, "onQueryTextSubmit = " + query);
                         arrayAdapter2.getFilter().filter(query);
-                        if (code.contains(query.trim()) && (!completedCourses.contains(query))){
+                        if (code.contains(query.trim()) && (!completedCourses.contains(query))) {
                             completedCourses.add(query);
                             Collections.sort(completedCourses);
                             Toast.makeText(completedCourses.this, "Adding succeed!", Toast.LENGTH_SHORT).show();
@@ -202,9 +202,14 @@ public class completedCourses extends AppCompatActivity {
                                     .child("Students").child(FirebaseAuth.getInstance()
                                             .getCurrentUser().getUid()).child("completedCoursesCode").setValue(completedCourses);
                             return true;
-                        }else{
-                            Toast.makeText(completedCourses.this, "Adding failed!", Toast.LENGTH_SHORT).show();
-                            return false;
+                        } else {
+                            if (!code.contains(query.trim())) {
+                                Toast.makeText(completedCourses.this, "Course doesn't exist!", Toast.LENGTH_SHORT).show();
+                                return false;
+                            } else {
+                                Toast.makeText(completedCourses.this, "Course already added!", Toast.LENGTH_SHORT).show();
+                                return false;
+                            }
                         }
                     }
                 });
