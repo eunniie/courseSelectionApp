@@ -32,22 +32,6 @@ public class MainActivity extends AppCompatActivity implements LoginView {
         mAuth = FirebaseAuth.getInstance();
         setContentView(binding.getRoot());
         presenter = new LoginPresenter(this, new LoginModel());
-        binding.admin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.email.setText("admin@admin.com");
-                binding.password.setText("superadmin");
-                signIn();
-            }
-        });
-        binding.student.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.email.setText("student@test.com");
-                binding.password.setText("1234567");
-                signIn();
-            }
-        });
         binding.login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
